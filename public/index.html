@@ -38,11 +38,12 @@
   .navlog span{color:#9aabc8}
   @media (max-width:600px){
     .frame{inset:18px !important}
-    .navlog{top:30px;left:30px;letter-spacing:.2em}
-    #fs-credit{top:32px !important;right:28px !important}
-    #fs-rbl{left:28px !important;bottom:34px !important}
-    #fs-clock{right:28px !important;bottom:34px !important}
-    #fs-index{bottom:14px !important}
+    .navlog{top:26px;left:26px;letter-spacing:.2em}
+    #fs-credit{top:28px !important;right:26px !important;font-size:9px !important}
+    /* 하단 요소를 세로로 쌓아 겹침 방지: 좌표(위) → 시계 → 인덱스(맨 아래) */
+    #fs-rbl{left:50% !important;right:auto !important;transform:translateX(-50%);bottom:92px !important;text-align:center !important;font-size:9.5px !important;line-height:1.7 !important;width:90%}
+    #fs-clock{left:50% !important;right:auto !important;transform:translateX(-50%);bottom:50px !important;text-align:center !important;font-size:9.5px !important;line-height:1.7 !important}
+    #fs-index{bottom:28px !important}
     main{padding:7vw !important}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
