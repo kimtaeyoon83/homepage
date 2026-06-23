@@ -14,7 +14,7 @@ LOGDIR = os.path.join(PUBLIC, "log")
 MEDIA  = os.path.join(LOGDIR, "media")
 SITE   = os.environ.get("SITE_URL", "https://codedeck.duckdns.org")
 AUTHOR = "Freddie"
-OG_DEFAULT = SITE + "/jwst-carina.jpg"
+OG_DEFAULT = SITE + "/og-cover.jpg"
 PORT   = int(os.environ.get("PORT", "8080"))
 MAXUP  = 20 * 1024 * 1024
 
@@ -181,16 +181,25 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"/>'
   '<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet"/>'
   '<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet"/>')
 
-def post_page(meta, num, body_html, standfirst, reading, older, newer, desc, ogimg):
+def post_page(meta, num, body_html, standfirst, reading, older, newer, desc, ogimg, wc=0):
     slug, title, date = meta["slug"], meta["title"], meta["date"]
     url = f"{SITE}/log/{quote(slug)}.html"
     e = html_mod.escape
     jsonld = json.dumps({
         "@context": "https://schema.org", "@type": "BlogPosting",
         "headline": title, "datePublished": date, "dateModified": date,
-        "inLanguage": "ko", "author": {"@type": "Person", "name": AUTHOR},
+        "inLanguage": "ko", "wordCount": wc,
+        "author": {"@type": "Person", "name": AUTHOR},
         "publisher": {"@type": "Person", "name": AUTHOR},
         "mainEntityOfPage": url, "url": url, "image": ogimg, "description": desc,
+    }, ensure_ascii=False)
+    crumbs = json.dumps({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Freddie's space", "item": SITE + "/"},
+            {"@type": "ListItem", "position": 2, "name": "Field Log", "item": SITE + "/log.html"},
+            {"@type": "ListItem", "position": 3, "name": title, "item": url},
+        ],
     }, ensure_ascii=False)
     sf = f'<p class="standfirst">{e(standfirst)}</p>' if standfirst else ""
     nav = ""
@@ -220,7 +229,10 @@ def post_page(meta, num, body_html, standfirst, reading, older, newer, desc, ogi
 <meta name="twitter:title" content="{e(title)}"/>
 <meta name="twitter:description" content="{e(desc)}"/>
 <meta name="twitter:image" content="{e(ogimg)}"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="alternate" type="application/rss+xml" title="Freddie's space — Field Log" href="/rss.xml"/>
 <script type="application/ld+json">{jsonld}</script>
+<script type="application/ld+json">{crumbs}</script>
 {GA}
 {FONTS}
 <style>{PAGE_CSS}</style>
@@ -267,7 +279,7 @@ def build_static(posts):
         ogimg = og_image(md)
         page = post_page(p, n - i, body, standfirst, reading,
                          posts[i+1] if i+1 < n else None,
-                         posts[i-1] if i > 0 else None, desc, ogimg)
+                         posts[i-1] if i > 0 else None, desc, ogimg, len(text.split()))
         open(os.path.join(LOGDIR, p["slug"] + ".html"), "w", encoding="utf-8").write(page)
 
 def build_sitemap(posts):
