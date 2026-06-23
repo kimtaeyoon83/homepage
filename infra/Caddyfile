@@ -1,0 +1,52 @@
+codedeck.duckdns.org {
+    log {
+        output stdout
+        format console
+    }
+
+    encode gzip
+    root * /srv
+    file_server
+
+    # --- 이전 백엔드 라우팅 (백엔드 docker start 시 아래 주석 해제하여 복원) ---
+    # @rainborn_api path /toy/rainborn/api*
+    # handle @rainborn_api {
+    #     uri strip_prefix /toy/rainborn
+    #     reverse_proxy http://rainborn-backend:4000
+    # }
+    # @rainborn_static path /rainborn-static*
+    # handle @rainborn_static {
+    #     uri replace /rainborn-static /toy/rainborn
+    #     reverse_proxy http://rainborn-frontend:3000
+    # }
+    # @rainborn_frontend path /toy/rainborn /toy/rainborn/*
+    # handle @rainborn_frontend {
+    #     reverse_proxy http://rainborn-frontend:3000
+    # }
+    # @main_api path /api /api/*
+    # handle @main_api {
+    #     reverse_proxy http://backend:4000
+    # }
+    # handle {
+    #     reverse_proxy http://frontend:3000
+    # }
+}
+
+myram.duckdns.org {
+    log {
+        output stdout
+        format console
+    }
+
+    # API requests to myai-memory backend
+    @myai_api path /api /api/*
+    handle @myai_api {
+        reverse_proxy http://myai-memory-backend-prod:4000
+    }
+
+    # Frontend for all other requests
+    handle {
+        reverse_proxy http://myai-memory-frontend-prod:3000
+    }
+}
+
