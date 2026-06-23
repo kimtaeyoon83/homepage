@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>빛은 어떻게 튕기고, 색은 왜 생기고, 빛은 어떻게 물질이 되는가 · Freddie's space</title>
+<meta name="description" content="빛 반사에서 양자역학까지"/>
+<meta name="author" content="Freddie"/>
+<link rel="canonical" href="https://codedeck.duckdns.org/log/2026-06-23-%EB%B9%9B%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-%ED%8A%95%EA%B8%B0%EA%B3%A0-%EC%83%89%EC%9D%80-%EC%99%9C-%EC%83%9D%EA%B8%B0%EA%B3%A0-%EB%B9%9B%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%AC%BC%EC%A7%88%EC%9D%B4-%EB%90%98%EB%8A%94%EA%B0%80.html"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="Freddie's space"/>
+<meta property="og:title" content="빛은 어떻게 튕기고, 색은 왜 생기고, 빛은 어떻게 물질이 되는가"/>
+<meta property="og:description" content="빛 반사에서 양자역학까지"/>
+<meta property="og:url" content="https://codedeck.duckdns.org/log/2026-06-23-%EB%B9%9B%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-%ED%8A%95%EA%B8%B0%EA%B3%A0-%EC%83%89%EC%9D%80-%EC%99%9C-%EC%83%9D%EA%B8%B0%EA%B3%A0-%EB%B9%9B%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%AC%BC%EC%A7%88%EC%9D%B4-%EB%90%98%EB%8A%94%EA%B0%80.html"/>
+<meta property="og:image" content="https://commons.wikimedia.org/wiki/Special:FilePath/Dispersion%20of%20White%20Light%20Through%20a%20Prism.jpg?width=800"/>
+<meta property="article:published_time" content="2026-06-23"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="빛은 어떻게 튕기고, 색은 왜 생기고, 빛은 어떻게 물질이 되는가"/>
+<meta name="twitter:description" content="빛 반사에서 양자역학까지"/>
+<meta name="twitter:image" content="https://commons.wikimedia.org/wiki/Special:FilePath/Dispersion%20of%20White%20Light%20Through%20a%20Prism.jpg?width=800"/>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "빛은 어떻게 튕기고, 색은 왜 생기고, 빛은 어떻게 물질이 되는가", "datePublished": "2026-06-23", "dateModified": "2026-06-23", "inLanguage": "ko", "author": {"@type": "Person", "name": "Freddie"}, "publisher": {"@type": "Person", "name": "Freddie"}, "mainEntityOfPage": "https://codedeck.duckdns.org/log/2026-06-23-%EB%B9%9B%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-%ED%8A%95%EA%B8%B0%EA%B3%A0-%EC%83%89%EC%9D%80-%EC%99%9C-%EC%83%9D%EA%B8%B0%EA%B3%A0-%EB%B9%9B%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%AC%BC%EC%A7%88%EC%9D%B4-%EB%90%98%EB%8A%94%EA%B0%80.html", "url": "https://codedeck.duckdns.org/log/2026-06-23-%EB%B9%9B%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-%ED%8A%95%EA%B8%B0%EA%B3%A0-%EC%83%89%EC%9D%80-%EC%99%9C-%EC%83%9D%EA%B8%B0%EA%B3%A0-%EB%B9%9B%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%AC%BC%EC%A7%88%EC%9D%B4-%EB%90%98%EB%8A%94%EA%B0%80.html", "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Dispersion%20of%20White%20Light%20Through%20a%20Prism.jpg?width=800", "description": "빛 반사에서 양자역학까지"}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JJQRYQ0NG6"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-JJQRYQ0NG6');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{--ink:#070a12;--star:#f3efe3;--brass:#c7a24a;--haze:#9aabc8;--line:rgba(199,162,74,.16);--inset:34px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{min-height:100%;background:var(--ink);color:var(--star);font-family:'IBM Plex Mono',ui-monospace,monospace;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .bg1{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(1000px 680px at 80% 8%, rgba(40,58,120,.20), transparent 62%),radial-gradient(880px 600px at 8% 92%, rgba(96,58,130,.14), transparent 64%),radial-gradient(circle at 50% 26%, #0b1020 0%, #070a12 70%, #03040a 100%)}
+  .bg2{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.28;background-image:radial-gradient(1.1px 1.1px at 40px 60px,#fff,transparent),radial-gradient(1px 1px at 220px 120px,#cfe0ff,transparent),radial-gradient(1.2px 1.2px at 380px 220px,#fff,transparent),radial-gradient(1px 1px at 540px 80px,#a9c2ff,transparent);background-repeat:repeat;background-size:600px 320px}
+  .plate{position:fixed;inset:var(--inset);z-index:1;pointer-events:none;border:1px solid rgba(199,162,74,.14)}
+  .tick{position:absolute;width:12px;height:12px;opacity:.8;background:linear-gradient(var(--brass),var(--brass)) center/12px 1px no-repeat,linear-gradient(var(--brass),var(--brass)) center/1px 12px no-repeat}
+  .tl{left:-6px;top:-6px}.tr{right:-6px;top:-6px}.bl{left:-6px;bottom:-6px}.br{right:-6px;bottom:-6px}
+  #progress{position:fixed;top:0;left:0;height:2px;width:100%;background:var(--brass);transform:scaleX(0);transform-origin:left center;z-index:12;transition:transform .12s linear;box-shadow:0 0 8px rgba(199,162,74,.55);pointer-events:none}
+  .wrap{position:relative;z-index:2;max-width:680px;margin:0 auto;padding:clamp(58px,10vh,116px) clamp(26px,6vw,42px) 130px}
+  .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:clamp(40px,8vh,82px)}
+  .back{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--brass);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px;transition:color .3s,border-color .3s}
+  .back:hover{color:var(--star);border-color:var(--brass)}
+  .crumb{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--haze)}
+  .phead{margin-bottom:clamp(28px,5vh,48px)}
+  .phead .meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:20px}
+  .phead .meta .n{color:var(--brass)}.phead .meta .sep{color:rgba(199,162,74,.4)}.phead .meta .x{color:var(--haze)}
+  .phead h1{font-family:'Cormorant','Noto Serif KR',serif;font-weight:500;font-size:clamp(32px,5.2vw,55px);line-height:1.07;letter-spacing:.008em;color:var(--star);text-wrap:balance}
+  .standfirst{font-family:'Cormorant','Noto Serif KR',serif;font-style:italic;font-weight:500;font-size:clamp(18px,2.3vw,23px);color:#b9a368;margin-top:18px;line-height:1.32;letter-spacing:.01em}
+  .fs-prose{font-family:'Newsreader','Noto Serif KR',serif;font-size:17px;line-height:1.78;color:#e4e0d2;font-variant-numeric:oldstyle-nums}
+  .fs-prose > p:first-of-type{font-size:1.05em;line-height:1.72;color:#efeadd}
+  .fs-prose p{margin:0 0 1.3em}
+  .fs-prose h2{font-family:'Cormorant','Noto Serif KR',serif;font-weight:600;font-size:1.68em;line-height:1.14;margin:2.2em 0 .6em;color:#f5f1e6;letter-spacing:.005em}
+  .fs-prose h2:first-child{margin-top:0}
+  .fs-prose h3{font-family:'Cormorant','Noto Serif KR',serif;font-weight:600;font-size:1.3em;line-height:1.24;margin:1.9em 0 .5em;color:#f1ecdf}
+  .fs-prose strong{color:#f5f1e6;font-weight:600}
+  .fs-prose em{font-style:italic;color:#e9e4d6}
+  .fs-prose a{color:#c7a24a;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:rgba(199,162,74,.42);transition:color .25s,text-decoration-color .25s}
+  .fs-prose a:hover{color:#f3efe3;text-decoration-color:#c7a24a}
+  .fs-prose ul,.fs-prose ol{margin:0 0 1.3em;padding-left:1.3em}
+  .fs-prose li{margin:.4em 0;padding-left:.2em}.fs-prose li::marker{color:#c7a24a}
+  .fs-prose blockquote{margin:1.9em 0;padding:.5em 0 .5em 1.5em;border-left:2px solid #c7a24a;font-style:italic;color:#cdd4e3}
+  .fs-prose blockquote p{margin:.5em 0}.fs-prose blockquote strong{color:#e3c373;font-style:normal}
+  .fs-prose code{font-family:'IBM Plex Mono',monospace;font-size:.8em;background:rgba(199,162,74,.1);padding:.13em .42em;border-radius:3px;color:#e3c373}
+  .fs-prose pre{background:rgba(9,14,26,.7);border:1px solid rgba(199,162,74,.16);border-radius:6px;padding:18px 20px;overflow:auto;margin:1.7em 0}
+  .fs-prose pre code{background:none;padding:0;color:#dfe6f2;font-size:.84em;line-height:1.65}
+  .fs-prose hr{border:0;height:1px;background:linear-gradient(90deg,transparent,rgba(199,162,74,.5),transparent);margin:2.8em 0}
+  .fs-prose table{width:100%;border-collapse:collapse;margin:2em 0;font-family:'IBM Plex Mono',monospace;font-size:13.5px;line-height:1.5}
+  .fs-prose thead th{text-align:left;color:#c7a24a;font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;padding:11px 16px 11px 0;border-bottom:1px solid rgba(199,162,74,.42)}
+  .fs-prose tbody td{padding:12px 16px 12px 0;border-bottom:1px solid rgba(199,162,74,.12);color:#d7d2c3;vertical-align:top}
+  .fs-prose tbody td:first-child{color:#efeadd}
+  .fs-prose figure{margin:2.2em 0}
+  .fs-prose figure img{width:100%;height:auto;display:block;border-radius:4px;border:1px solid rgba(199,162,74,.18);background:rgba(10,16,30,.5)}
+  .fs-prose figure.fig-diagram img{background:#f4f1e9;padding:20px;box-sizing:border-box}
+  .fs-prose figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.65;color:#9aabc8;margin-top:11px;letter-spacing:.015em;padding-left:14px;border-left:1px solid rgba(199,162,74,.32)}
+  .fs-prose img{max-width:100%;height:auto}
+  .foot{margin-top:clamp(56px,9vh,92px)}
+  .foot .div{display:flex;align-items:center;gap:16px;margin-bottom:30px}
+  .foot .div span.l{flex:1;height:1px;background:rgba(199,162,74,.18)}
+  .foot .div span.s{color:var(--brass);font-size:13px;letter-spacing:.4em}
+  .nav{display:flex;gap:18px;align-items:stretch}
+  .nav a{flex:1;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:4px;padding:16px 18px;transition:background .3s,border-color .3s}
+  .nav a:hover{background:rgba(199,162,74,.05);border-color:rgba(199,162,74,.4)}
+  .nav a.newer{text-align:right}
+  .nav .lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--haze)}
+  .nav .t{font-family:'Cormorant','Noto Serif KR',serif;font-size:20px;color:var(--star);margin-top:7px;line-height:1.15}
+  .tolist{margin-top:30px;text-align:center;font-size:11px;letter-spacing:.18em}
+  .tolist a{color:var(--brass);text-decoration:none}.tolist a:hover{color:var(--star)}
+  @media (max-width:560px){:root{--inset:16px}.nav{flex-direction:column}.nav a.newer{text-align:left}.fs-prose{font-size:17.5px}.fs-prose table{font-size:12.5px}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="bg1"></div><div class="bg2"></div>
+<div class="plate"><i class="tick tl"></i><i class="tick tr"></i><i class="tick bl"></i><i class="tick br"></i></div>
+<div id="progress"></div>
+<div class="wrap">
+  <div class="top"><a class="back" href="/log.html">&larr; Field Log</a><span class="crumb">Entry</span></div>
+  <article>
+    <div class="phead">
+      <div class="meta"><span class="n">LOG · 002</span><span class="sep">/</span><time class="x" datetime="2026-06-23">2026-06-23</time><span class="sep">/</span><span class="x">12분 읽기</span></div>
+      <h1>빛은 어떻게 튕기고, 색은 왜 생기고, 빛은 어떻게 물질이 되는가</h1>
+      <p class="standfirst">빛 반사에서 양자역학까지</p>
+    </div>
+    <div class="fs-prose"><figure><img alt="프리즘을 통과한 흰빛이 무지개 색으로 갈라지는 모습. 빛은 색마다 박자(진동수)가 다르다." loading="lazy" referrerpolicy="no-referrer" src="https://commons.wikimedia.org/wiki/Special:FilePath/Dispersion%20of%20White%20Light%20Through%20a%20Prism.jpg?width=800"/><figcaption>프리즘을 통과한 흰빛이 여러 색으로 갈라진다. 흰빛 속에 모든 색이 섞여 있었다는 증거다. (출처: Wikimedia Commons)</figcaption></figure>
+<hr/>
+<h2>들어가며</h2>
+<p>"빛 반사는 광자가 원자에 붙었다가 나오는 걸까?"</p>
+<p>이 단순한 질문 하나에서 시작해, 색깔이 생기는 이유, 금속이 반짝이는 원리, 그리고 빛과 물질이 서로 변환되는 양자 세계의 입구까지 이어졌다. 이 글은 그 여정을 한 줄기로 정리한 것이다. 어려운 수식 없이, "전자 그네"라는 하나의 그림으로 끝까지 따라갈 수 있다.</p>
+<hr/>
+<h2>1. 빛 반사는 "붙었다 나오는 것"이 아니다</h2>
+<p>가장 흔한 오해부터 짚고 가자. 빛이 반사될 때, 광자가 원자에 <strong>흡수됐다가(붙었다가) 다시 튀어나오는 것</strong>이 아니다.</p>
+<p>진짜 메커니즘은 이렇다. 빛은 사실 <strong>출렁이는 전기장</strong>이다. 이 빛이 물질에 닿으면, 출렁이는 전기장이 물질 속 전자를 똑같은 박자로 흔든다. 그리고 <strong>흔들리는 전자는 그 자체로 새 빛을 내보낸다.</strong> 잡았다 뱉는 게 아니라, 흔들림과 빛 방출이 한 박자로 <strong>동시에</strong> 일어난다.</p>
+<p>비유하자면 <strong>물 위에 뜬 코르크</strong>다. 파도가 지나가면 코르크가 까딱까딱 흔들리고, 그 흔들림이 곧바로 새 잔물결을 만든다. 코르크가 파도를 "삼켰다 뱉는" 게 아니라, 흔들리는 것 자체가 새 물결이 되는 것이다.</p>
+<p>이 글 전체에서 전자를 <strong>"그네"</strong>, 빛을 <strong>"그네를 미는 손"</strong>으로 부르겠다.</p>
+<blockquote>
+<p><strong>핵심 구분</strong><br/>
+- <strong>반사</strong> = 전자가 흔들리며 <em>동시에</em> 빛을 내보냄 (시간 지연 없음)<br/>
+- <strong>진짜 흡수</strong> = 전자가 에너지를 <em>한참 품었다가</em> 아무 방향으로 내뱉음 (형광 같은 것, 반사가 아님)</p>
+</blockquote>
+<hr/>
+<h2>2. 금속은 왜 반짝일까</h2>
+<p>금속 안에는 원자에 매이지 않고 <strong>자유롭게 떠다니는 전자(자유전자)</strong>가 엄청나게 많다. 그래서 전기도 잘 통한다.</p>
+<p>빛이 금속 표면에 닿으면, 출렁이는 전기장이 이 자유전자들을 흔든다. 전자가 워낙 많고 빠르게 반응해서, 들어온 빛이 안으로 파고들지 못하고 <strong>표면에서 곧바로 도로 빛으로 튀어나온다.</strong> 그것이 우리가 보는 반사다.</p>
+<p>그래서 <strong>전기가 잘 통하는 금속일수록(자유전자 많음) 빛도 잘 반사한다.</strong> 은·알루미늄이 거울 재료로 쓰이는 이유다.</p>
+<hr/>
+<h2>3. 나오는 빛은 "새로 만들어진" 빛이다</h2>
+<p>여기가 중요한 지점이다. 금속 안에 미리 들어있던 빛이 나오는 게 아니다.</p>
+<p>전자가 흔들리면(가속되면) 전자기파, 즉 빛이 <strong>실제로 새로 생겨난다.</strong> 이건 비유가 아니라 진짜다. 흔들리는 전자는 일종의 빛 공장이다. <strong>안테나</strong>가 정확히 이 원리다 — 전기로 전자를 위아래로 흔들면, 없던 전파(=빛의 한 종류)가 새로 만들어져 사방으로 퍼진다.</p>
+<p>순서를 정리하면:</p>
+<p><strong>들어온 빛이 있어야 → 전자가 흔들리고 → 그래야 빛이 나간다.</strong></p>
+<p>들어온 빛이 없으면 나가는 빛도 0이다. 그래서 깜깜한 방의 금속은 빛나지 않는다. 밀어줄 손(빛)이 없으니 전자 그네가 안 흔들리는 것이다.</p>
+<p><strong>에너지는 보존된다.</strong> 들어온 빛의 에너지가 전자의 흔들림으로 옮겨가고, 그 흔들림이 다시 새 빛으로 옮겨간다. 빛 알갱이는 바뀌어도 에너지는 도미노처럼 쭉 이어진다. 빛이 공짜로 솟는 게 아니라, "빛이라는 형태"만 새로 만들어지는 것이다.</p>
+<hr/>
+<h2>4. 가열해서 나오는 빛 — 흑체복사</h2>
+<p>금속을 가열하면 스스로 빛난다(달군 쇠가 빨갛게). 이것도 결국 <strong>전자가 흔들려서 빛이 나오는</strong> 같은 원리다. 다만 <strong>무엇이 전자를 흔드느냐</strong>가 다르다.</p>
+<ul>
+<li><strong>반사</strong>: 외부에서 들어온 빛이 전자를 흔든다 → 빛이 없으면 반사도 없다.</li>
+<li><strong>가열 발광</strong>: 열이 전자를 흔든다 → 깜깜한 방에서도 스스로 빛난다.</li>
+</ul>
+<p>또 하나 결정적 차이가 있다. 반사광은 들어온 빛의 박자를 따라가니 비슷한 색이 나간다. 반면 열로 나오는 빛은 전자들이 <strong>온갖 제멋대로의 속도</strong>로 흔들려서, 넓은 범위의 색이 섞여 나온다. 그리고 <strong>온도가 색을 결정한다.</strong></p>
+<table>
+<thead>
+<tr>
+<th>온도</th>
+<th>색</th>
+<th>예</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>낮음</td>
+<td>빨강</td>
+<td>불에 달군 쇠</td>
+</tr>
+<tr>
+<td>중간</td>
+<td>주황·노랑</td>
+<td>—</td>
+</tr>
+<tr>
+<td>높음</td>
+<td>하양·파랑</td>
+<td>별빛(파란 별이 가장 뜨겁다)</td>
+</tr>
+</tbody>
+</table>
+<p>이렇게 온도만으로 색이 정해지는 빛을 <strong>흑체복사</strong>라고 한다. 전구 필라멘트, 달군 쇠, 별빛이 모두 이 원리다.</p>
+<hr/>
+<h2>5. 매끈하면 왜 더 잘 비칠까 — 정반사와 난반사</h2>
+<p>이건 "빛이 어떻게 튕기나"와는 다른 질문이다. "튕겨 나온 빛들이 <strong>어느 방향으로</strong> 가나"의 문제다.</p>
+<p><strong>반사되는 빛의 양은 매끈하든 거칠든 똑같다.</strong> 차이는 그 빛들이 한 방향으로 가지런히 가느냐, 사방으로 흩어지느냐다.</p>
+<ul>
+<li><strong>매끈한 표면</strong>: 들어온 빛들이 전부 같은 각도로 가지런히 튕겨 나간다 → 상(像)이 또렷하다 → <strong>거울(정반사)</strong></li>
+<li><strong>거친 표면</strong>: 울퉁불퉁하니 제각기 다른 방향으로 튕긴다 → 빛은 다 나오지만 흩어진다 → 뿌옇게 밝기만 함 → <strong>난반사(확산반사)</strong></li>
+</ul>
+<figure class="fig-diagram"><img alt="왼쪽은 매끈한 표면에서 빛이 가지런히 반사되는 정반사, 오른쪽은 거친 표면에서 사방으로 흩어지는 난반사." loading="lazy" referrerpolicy="no-referrer" src="https://commons.wikimedia.org/wiki/Special:FilePath/Specular%20And%20Diffuse%20Reflection.svg?width=800"/><figcaption>왼쪽(정반사): 매끈한 면에서 빛이 한 방향으로 가지런히 나간다. 오른쪽(난반사): 거친 면에서 사방으로 흩어진다. 반사되는 빛의 양은 같다. (출처: Wikimedia Commons)</figcaption></figure>
+<p>비유하면 <strong>잔잔한 호수 vs 출렁이는 호수</strong>다. 잔잔한 물엔 풍경이 또렷이 비치지만, 물결이 일면 빛은 똑같이 반사돼도 흩어져서 그림이 깨진다.</p>
+<p>재밌는 기준이 하나 있다. <strong>빛의 파장보다 표면 굴퉁이가 작으면</strong> 빛 입장에선 매끈한 것이다. 가시광선 파장이 약 0.0005mm라서, 그보다 작게 갈고 닦으면 거울이 된다.</p>
+<hr/>
+<h2>6. 색은 왜 생길까 — 삼키느냐, 튕기느냐</h2>
+<p>이제 핵심. <strong>물체는 들어온 빛 중 일부 색만 도로 내보내고(반사), 나머지 색은 삼켜버린다(흡수). 우리 눈에 보이는 색 = 삼키지 않고 도로 내보낸 색이다.</strong></p>
+<p>여기서 1장에서 미뤄뒀던 <strong>진짜 흡수(삼켰다 안 뱉기)</strong>가 주인공으로 등장한다.</p>
+<p><strong>왜 어떤 색은 삼켜질까 — 그네마다 좋아하는 박자가 다르다</strong></p>
+<p>전자 그네에는 <strong>잘 맞는 박자(고유 진동수)</strong>가 있다. 타이밍이 맞으면 크게 흔들리고, 안 맞으면 시큰둥하다. 빛도 색마다 박자가 다르다(빨강은 느린 박자, 파랑은 빠른 박자).</p>
+<ul>
+<li><strong>그네 박자랑 딱 맞는 색</strong> → 전자가 격하게 흔들리며 에너지를 꽉 붙잡음 → 열로 바뀌고 <strong>삼켜짐</strong>. 그 색은 안 나온다.</li>
+<li><strong>박자가 안 맞는 색</strong> → 전자가 시큰둥 → 도로 튕겨냄 → <strong>반사돼서 눈에 온다.</strong></li>
+</ul>
+<p>그래서 <strong>사과가 빨간 이유</strong>: 껍질 전자가 파랑·초록 박자와 잘 맞아 그 색들을 삼키고, 빨강만 안 맞아 도로 튕긴다. 사과가 빨강을 <em>가진</em> 게 아니라 빨강만 <em>안 삼킨</em> 것이다.</p>
+<ul>
+<li><strong>검은 물체</strong>: 모든 색을 골고루 삼킴 → 나오는 빛이 없어 깜깜함 (그래서 햇볕에 뜨겁다)</li>
+<li><strong>흰 물체</strong>: 어떤 색도 안 삼키고 다 튕김 → 모든 색이 섞여 하양</li>
+</ul>
+<p>즉 <strong>색이란 전자가 만드는 게 아니라 걸러내는 것</strong>이다.</p>
+<hr/>
+<h2>7. 금속 색의 비밀 — 전체적으로 박자가 안 맞는다</h2>
+<p>금속의 자유전자는 원자에 매이지 않고 풀려 있어서, <strong>특정 색 하나에만 맞는 박자가 없다.</strong> 편식이 없는 것이다. 그래서 들어오는 모든 색에 다 같이 맞춰 흔들리고, 다 튕겨낸다.</p>
+<ul>
+<li><strong>대부분 금속(은·알루미늄)</strong>: 편식 없음 → 모든 색 골고루 튕김 → <strong>색 없는 은빛/거울색</strong></li>
+<li><strong>금·구리</strong>: 속전자 사정 때문에 <strong>파란 쪽만 살짝 삼킴</strong> → 빨강·노랑 위주로 튕김 → <strong>금색·구릿빛</strong></li>
+</ul>
+<p>여기에 앞 내용이 합쳐진다:<br/>
+- 자유전자 많음 → 빛이 안 들어오고 표면에서 즉시 튕김 → <strong>반짝임(금속 광택)</strong><br/>
+- 박자 편식 없음 → 모든 색 골고루 튕김 → <strong>은빛(무채색)</strong></p>
+<p>이 둘이 합쳐진 게 "반짝이는 은색 금속"이다.</p>
+<hr/>
+<h2>8. 광자와 전자는 전혀 다른 존재다</h2>
+<p>지금까지 둘이 짝꿍처럼 등장했지만, <strong>광자와 전자는 근본적으로 다르다.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>광자</th>
+<th>전자</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>정체</td>
+<td>빛 알갱이</td>
+<td>물질 알갱이</td>
+</tr>
+<tr>
+<td>질량</td>
+<td>없음</td>
+<td>있음</td>
+</tr>
+<tr>
+<td>속도</td>
+<td>항상 빛의 속도</td>
+<td>느리게~빠르게, 멈춤도 가능</td>
+</tr>
+<tr>
+<td>전기</td>
+<td>없음(중성)</td>
+<td>음전기 띰</td>
+</tr>
+<tr>
+<td>위치</td>
+<td>날아다님</td>
+<td>원자 속/주위에 있음</td>
+</tr>
+</tbody>
+</table>
+<p>비유하면 <strong>전자는 그네(물체), 광자는 그네를 미는 손길(에너지의 전령)</strong>이다. 그럼에도 늘 같이 등장하는 이유는 <strong>서로 에너지를 주고받기 때문</strong>이다. 광자가 전자를 흔들고, 흔들린 전자가 새 광자를 만든다.</p>
+<p>한 가지 공통점은 둘 다 <strong>알갱이이면서 동시에 파동인 이중성</strong>을 가진다는 것. 하지만 이건 "같다"는 뜻이 아니라 둘 다 양자 세계 주민이라 그렇다는 정도다.</p>
+<hr/>
+<h2>9. 전자는 광자를 만들 수 있다</h2>
+<p>흔들리는(가속되는) 전자는 광자를 새로 만든다. 우리가 본 게 전부 이것이었다.</p>
+<p>전자가 광자를 만드는 길은 크게 두 가지다:</p>
+<ol>
+<li><strong>흔들려서(가속)</strong> → 반사, 열복사, 안테나</li>
+<li><strong>높은 에너지 칸 → 낮은 칸으로 떨어져서</strong> → 형광등, LED, 네온사인, 레이저</li>
+</ol>
+<p>원자 속 전자가 높은 칸에서 낮은 칸으로 툭 떨어지면, 남는 에너지가 광자 한 알로 튀어나온다. 이게 형광등·LED가 빛나는 원리다.</p>
+<figure class="fig-diagram"><img alt="전자가 바깥쪽 높은 궤도에서 안쪽 낮은 궤도로 떨어지면서 광자(빛)를 내보내는 그림." loading="lazy" referrerpolicy="no-referrer" src="https://commons.wikimedia.org/wiki/Special:FilePath/Bohr-atom-electron-to-jump.svg?width=500"/><figcaption>전자가 높은 칸에서 낮은 칸으로 떨어지며 그 차이만큼의 에너지를 광자로 내보낸다. LED·형광등·네온사인이 이 원리다. (출처: Wikimedia Commons)</figcaption></figure>
+<hr/>
+<h2>10. 빛은 물질이 될 수 있다 — 쌍생성</h2>
+<p>거꾸로도 된다. <strong>빛이 물질로 변할 수 있다.</strong></p>
+<p>조건은 <strong>광자의 에너지가 아주 커야</strong> 한다는 것. 눈에 보이는 빛은 에너지가 약해서 안 되고, <strong>감마선</strong> 같은 고에너지 광자라야 가능하다.</p>
+<p>이 센 광자 하나가 → <strong>전자 하나 + 양전자 하나</strong>로 변신한다. 빛이 사라지고 그 자리에 물질 두 알이 생긴다. 이를 <strong>쌍생성(pair production)</strong>이라 한다.</p>
+<ul>
+<li><strong>양전자</strong>는 전자와 똑같은데 전기만 반대(양전기)인 쌍둥이, 즉 반물질이다.</li>
+<li>왜 짝으로 태어날까? 원래 광자는 전기가 0(중성)이었다. 음전기(전자)와 양전기(양전자)를 합치면 0이 되니, <strong>전기 장부를 맞추기 위해</strong> 항상 짝으로 나온다.</li>
+</ul>
+<p>왜 에너지가 커야 할까? 바로 <strong>E=mc²</strong> 때문이다. 물질을 만들려면 질량만큼의 에너지가 필요하다. 광자가 전자 2개분의 질량을 만들 만큼 충분해야 변신이 일어난다. 우리가 보통 E=mc²을 "물질→에너지(원자폭탄)"로 알지만, <strong>에너지→물질</strong>도 같은 공식이고 쌍생성이 그 거꾸로 버전이다.</p>
+<p>반대 과정도 있다. 전자와 양전자가 만나면 서로 사라지며 다시 광자가 된다(<strong>쌍소멸</strong>, 물질→빛).</p>
+<blockquote>
+<ul>
+<li><strong>빛 → 물질</strong>: 센 광자 → 전자 + 양전자 (쌍생성)</li>
+<li><strong>물질 → 빛</strong>: 전자 + 양전자 → 광자 (쌍소멸)</li>
+</ul>
+</blockquote>
+<hr/>
+<h2>11. 전자만으론 원자가 안 된다 — 그리고 빅뱅</h2>
+<p>좋은 의문 하나. 전자만 달랑 만들어선 우리가 아는 "물질"이 안 된다. 맞는 지적이다.</p>
+<p>원자는 이렇게 생겼다:</p>
+<p><strong>원자 = 가운데 무거운 핵(양성자+중성자) + 주위를 도는 가벼운 전자</strong></p>
+<figure class="fig-diagram"><img alt="가운데 핵(양성자+중성자)과 그 주위를 도는 전자들로 이루어진 원자 구조." loading="lazy" referrerpolicy="no-referrer" src="https://commons.wikimedia.org/wiki/Special:FilePath/Stylised%20atom%20with%20three%20Bohr%20model%20orbits%20and%20stylised%20nucleus.svg?width=420"/><figcaption>원자의 구조. 가운데 무거운 핵이 있고 가벼운 전자가 그 주위를 돈다. 전자만으론 이 그림이 완성되지 않는다. (출처: Wikimedia Commons)</figcaption></figure>
+<p>전자는 제일 바깥의 가벼운 부품일 뿐, 진짜 무게는 핵에 있다(양성자·중성자가 전자보다 약 1800배 무겁다). 그러니 전자만으론 껍데기 부스러기뿐이다.</p>
+<p>하지만 <strong>핵을 이루는 양성자·중성자도 빛으로 만들 수 있다.</strong> 광자 에너지가 더 크면 무거운 입자도 만들어진다. 단지 1800배 무거우니 에너지도 1800배 더 필요할 뿐이다. 원리상:</p>
+<p><strong>충분한 에너지 → 전자·양성자·중성자 생성 → 핵 조립 → 전자 결합 → 원자 완성 → 물질!</strong></p>
+<p>그리고 이건 공상이 아니다. <strong>실제로 우주가 이렇게 했다.</strong> 빅뱅 직후 우주는 거의 순수한 에너지(빛) 덩어리였고, 식어가며 그 에너지가 쌍생성으로 물질 입자가 됐다. 그것들이 뭉쳐 핵·원자·별·지구·우리 몸이 됐다.</p>
+<p><strong>지금 당신 몸을 이루는 원자들도, 까마득한 옛날엔 빛이었다.</strong></p>
+<hr/>
+<h2>12. 실생활 어디에 쓰이나</h2>
+<table>
+<thead>
+<tr>
+<th>방향</th>
+<th>실제 사용 예</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>전자 → 빛</strong></td>
+<td>LED·화면, 형광등·네온사인, 와이파이·휴대폰·라디오(안테나), 레이저, X선 촬영</td>
+</tr>
+<tr>
+<td><strong>빛 → 전자</strong></td>
+<td>태양광 발전, 카메라 센서, 광통신(인터넷)</td>
+</tr>
+<tr>
+<td><strong>물질 ↔ 빛</strong></td>
+<td>PET 암 검사(쌍소멸), 입자가속기(CERN)</td>
+</tr>
+</tbody>
+</table>
+<p>특히 <strong>PET 촬영</strong>이 인상적이다. 몸에 넣은 물질에서 양전자가 나오고, 그것이 몸속 전자와 만나 쌍소멸 → 광자 두 개로 변한다(물질→빛). 그 광자를 기계가 잡아 암 위치를 영상화한다. <strong>몸속에서 물질이 빛으로 변하는 현상을 그대로 이용하는</strong> 의료 장비다.</p>
+<p>폰 화면 보기(전자→빛), 사진 찍기(빛→전자), 와이파이(전자 흔들어 전파), 병원 PET 검사(물질→빛)까지 — 이 원리들이 하루 종일 우리를 둘러싸고 있다.</p>
+<hr/>
+<h2>13. 어디까지가 양자역학인가</h2>
+<p>흥미롭게도 우리가 다룬 내용 중 상당수는 사실 <strong>고전 전자기학</strong>(양자역학보다 100년 먼저 나온 이론)이다.</p>
+<ul>
+<li><strong>고전물리</strong>: 전자가 흔들려 빛이 나오는 것, 빛이 전기장이라 전자를 흔드는 것, 반사·안테나·거울</li>
+<li><strong>진짜 양자역학</strong>: 전자가 <em>칸을 떨어지며</em> 광자를 뱉는 것(LED), 빛이 <em>알갱이(광자)</em>라는 것, 빛↔물질 쌍생성, 알갱이-파동 이중성</li>
+</ul>
+<p>"양자(quantum)"의 핵심은 하나다: <strong>세상이 연속이 아니라 띄엄띄엄한 덩어리로 되어 있다.</strong> 에너지도 계단값만 가능하고, 빛도 광자라는 최소 알갱이가 있다. 돈으로 치면 1원 밑으로 못 내려가듯, 자연에도 최소 단위가 있다. 일상 직관은 전부 "연속"인데, 아주 작은 세계로 내려가면 모든 게 계단이고 알갱이다. <strong>자연이 픽셀로 되어 있던 것</strong>이다.</p>
+<hr/>
+<h2>14. 이걸 어떻게 알게 됐나 — 결정적 실험들</h2>
+<p>이 모든 건 상상이 아니라 <strong>"기존 이론으로 설명이 안 되는" 실험 결과</strong>에서 강제로 끌려 나온 결론이다.</p>
+<table>
+<thead>
+<tr>
+<th>알게 된 것</th>
+<th>결정적 실험</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>빛은 알갱이다</td>
+<td><strong>광전효과</strong> (아인슈타인)</td>
+</tr>
+<tr>
+<td>에너지는 계단이다</td>
+<td><strong>원자의 색선 스펙트럼</strong> (보어)</td>
+</tr>
+<tr>
+<td>물질도 파동이다</td>
+<td><strong>전자 회절</strong></td>
+</tr>
+<tr>
+<td>빛 ↔ 물질 변환</td>
+<td><strong>쌍생성·양전자 발견</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>광전효과</strong>: 금속에 빛을 쬐면 전자가 튀어나오는데, 빛의 색(진동수)이 기준 미달이면 아무리 세게 오래 쬐도 안 나온다. 빛이 파동이면 설명이 안 되고, <strong>알갱이(광자)</strong>라야 설명된다. 아인슈타인은 상대성이론이 아니라 이 광전효과로 노벨상을 받았다.</li>
+</ul>
+<figure class="fig-diagram"><img alt="금속 표면에 빛(광자)이 들어오자 전자가 튀어나오는 광전효과 도해." loading="lazy" referrerpolicy="no-referrer" src="https://commons.wikimedia.org/wiki/Special:FilePath/Photoelectric%20effect%20diagram.svg?width=700"/><figcaption>광전효과: 빛(광자)이 금속을 때리면 전자가 튀어나온다. 빛이 알갱이라는 결정적 증거였다. (출처: Wikimedia Commons)</figcaption></figure>
+<ul>
+<li><strong>색선 스펙트럼</strong>: 수소 기체를 달구면 정해진 몇 가지 색의 선만 나온다. 전자가 있을 수 있는 자리가 <strong>계단처럼 정해져 있어서</strong>다(보어). 이 색선은 원소마다 지문처럼 달라서, 별빛을 쪼개면 그 별의 원소를 알 수 있다(헬륨은 태양 빛에서 먼저 발견됐다).</li>
+</ul>
+<figure class="fig-diagram"><img alt="검은 배경에 빨강·청록·파랑·보라의 가는 선 몇 개만 나타나는 수소의 방출 스펙트럼." loading="lazy" referrerpolicy="no-referrer" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hydrogen%20spectrum.svg?width=760"/><figcaption>수소의 방출 스펙트럼. 무지개처럼 이어지지 않고 정해진 색의 선만 나타난다. 전자의 에너지 칸이 띄엄띄엄하다는 증거다. (출처: Wikimedia Commons)</figcaption></figure>
+<ul>
+<li><strong>전자 회절</strong>: 전자를 결정에 쏘면 알갱이라면 안 생길 물결무늬(간섭)가 생긴다. 전자도 파동이라는 증거다. 이 원리로 <strong>전자현미경</strong>을 만든다.</li>
+<li><strong>쌍생성 관찰</strong>: 안개상자에 고에너지 광자를 통과시키자, 빈 자리에서 전자와 그 짝이 튀어나온 자국이 찍혔다. <strong>양전자(반물질)</strong>가 이렇게 발견됐다.</li>
+</ul>
+<p>물리학자들도 처음엔 양자역학을 믿고 싶어 하지 않았다. 아인슈타인조차 "신은 주사위를 던지지 않는다"며 평생 못마땅해했다(정작 광전효과로 양자의 문을 연 게 그 사람이라는 게 아이러니다). 하지만 실험이 자꾸 양자가 맞다고 우기니 받아들일 수밖에 없었다.</p>
+<p>그래서 양자역학이 신뢰받는다 — <strong>사람이 멋져서 믿은 게 아니라, 자연이 실험으로 억지로 끌고 간</strong> 결론이라서. 지금도 양자역학은 인류 이론 중 실험과 가장 정확히 들어맞으며, 소수점 아래 10자리까지 맞는 예측도 있다.</p>
+<hr/>
+<h2>한 장으로 보는 요약</h2>
+<ol>
+<li>빛이 오면 전자가 그 빛에 맞춰 <strong>흔들리고</strong>, 흔들린 전자가 빛을 도로 내보낸다 → <strong>반사</strong></li>
+<li>전자가 들어온 빛 중 <strong>어떤 색을 삼키고 어떤 색을 내보내느냐</strong>로 우리가 보는 색이 정해진다 → <strong>색</strong> (전자는 색을 만드는 게 아니라 <em>걸러낸다</em>)</li>
+<li>반대로 열이나 전기로 전자를 <strong>흔들면</strong> 빛이 새로 만들어진다 → <strong>LED·발광·안테나</strong></li>
+<li>빛이 <strong>아주 큰 에너지</strong>면 전자(+양전자)를 만들 수 있다 → <strong>쌍생성</strong> (빛↔물질)</li>
+</ol>
+<p>빛 반사 질문 하나에서 시작해, 빛이 물질이 되고 물질이 빛이 되는 데까지. 우주에서 빛과 물질은 생각보다 훨씬 가까운 사이다.</p>
+<hr/>
+<p><em>이미지 출처: 본문의 도해·사진은 모두 Wikimedia Commons의 자유 이용(주로 CC BY-SA / CC BY) 자료다. 이미지는 위키미디어 안정 링크(Special:FilePath)로 연결되어 있어, 인터넷에 연결된 상태에서 문서를 열면 표시된다.</em></p></div>
+  </article>
+  <div class="foot">
+    <div class="div"><span class="l"></span><span class="s">✦</span><span class="l"></span></div>
+    <div class="nav"><a class="older" href="/log/2026-06-23-first-light.html"><div class="lbl">&larr; 이전 기록</div><div class="t">퍼스트 라이트</div></a></div>
+    <div class="tolist"><a href="/log.html">전체 목록으로</a> · <a href="/">Freddie&rsquo;s space</a></div>
+  </div>
+</div>
+<script>
+(function(){
+  var bar=document.getElementById('progress');
+  function up(){var h=document.documentElement,m=h.scrollHeight-h.clientHeight,p=m>0?Math.min(1,Math.max(0,(scrollY||h.scrollTop)/m)):0;bar.style.transform='scaleX('+p+')';}
+  addEventListener('scroll',up,{passive:true});addEventListener('resize',up);up();
+})();
+</script>
+</body>
+</html>

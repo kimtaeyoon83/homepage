@@ -4,6 +4,19 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Field Log · Freddie's space</title>
+<meta name="description" content="Freddie's space의 기록 — 떠오르는 생각을 하나씩, 궤도에 남긴다." />
+<meta name="author" content="Freddie" />
+<link rel="canonical" href="https://codedeck.duckdns.org/log.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Freddie's space" />
+<meta property="og:title" content="Field Log · Freddie's space" />
+<meta property="og:description" content="떠오르는 생각을 하나씩, 궤도에 남긴다." />
+<meta property="og:url" content="https://codedeck.duckdns.org/log.html" />
+<meta property="og:image" content="https://codedeck.duckdns.org/jwst-deepfield.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="alternate" type="application/rss+xml" title="Freddie's space — Field Log" href="/rss.xml" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JJQRYQ0NG6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-JJQRYQ0NG6');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet" />
@@ -201,11 +214,10 @@ function showList(){
   $('count').textContent=pad(total).slice(-2)+' ENTRIES';
   const cat=$('catalog');
   if(!total){ cat.innerHTML='<p class="empty">아직 기록이 없습니다. 첫 전송을 기다리는 중.</p>'; setProgress(); return; }
-  cat.innerHTML=POSTS.map((p,i)=>`<a class="entry" href="?p=${enc(p.slug)}" data-slug="${esc(p.slug)}">
+  cat.innerHTML=POSTS.map((p,i)=>`<a class="entry" href="/log/${enc(p.slug)}.html">
       <div class="meta"><div class="n">LOG·${pad(total-i)}</div><div class="d">${p.date||''}</div></div>
       <div><div class="ttl">${esc(p.title)}</div>${p.summary?`<div class="sum">${esc(p.summary)}</div>`:''}</div>
     </a>`).join('');
-  cat.querySelectorAll('.entry').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();go(a.dataset.slug);}));
   setProgress();
 }
 

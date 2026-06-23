@@ -1,0 +1,35 @@
+# Freddie's space — 검색·AI 크롤러 환영
+User-agent: *
+Allow: /
+
+# 검색 엔진
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+
+# AI 크롤러 (인용·참조 허용)
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://codedeck.duckdns.org/sitemap.xml
