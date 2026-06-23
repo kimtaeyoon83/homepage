@@ -12,6 +12,7 @@ REPO   = "/repo"
 PUBLIC = os.path.join(REPO, "public")
 LOGDIR = os.path.join(PUBLIC, "log")
 MEDIA  = os.path.join(LOGDIR, "media")
+ORDER_FILE = os.path.join(REPO, ".postorder.json")  # slug→작성시각 (정렬용, 비공개·repo 루트)
 SITE   = os.environ.get("SITE_URL", "https://codedeck.duckdns.org")
 AUTHOR = "Freddie"
 OG_DEFAULT = SITE + "/og-cover.jpg"
@@ -31,7 +32,11 @@ def today():
     return datetime.datetime.now().strftime("%Y-%m-%d")
 
 def rebuild_index():
-    posts = []
+    try:
+        order = json.load(open(ORDER_FILE, encoding="utf-8"))
+    except Exception:
+        order = {}
+    posts = []; changed = False
     for f in sorted(glob.glob(os.path.join(LOGDIR, "*.md"))):
         name = os.path.basename(f)[:-3]
         mo = re.match(r"(\d{4}-\d{2}-\d{2})", name)
@@ -45,11 +50,18 @@ def rebuild_index():
             s = l.strip()
             if s and not s.startswith("#"):
                 summary = re.sub(r"[*_`>\[\]]", "", s)[:90]; break
-        posts.append({"slug": name, "date": date, "title": title, "summary": summary})
-    posts.sort(key=lambda p: (p["date"], p["slug"]), reverse=True)
+        if name not in order:  # 첫 등장 시 작성시각 기록(이후 고정) — 기존 글은 파일 mtime으로 시드
+            order[name] = datetime.datetime.fromtimestamp(os.path.getmtime(f)).isoformat()
+            changed = True
+        posts.append({"slug": name, "date": date, "title": title, "summary": summary, "_ts": order[name]})
+    # 작성시각 내림차순(최신이 위). 동시각이면 슬러그로 안정 정렬.
+    posts.sort(key=lambda p: (p["_ts"], p["slug"]), reverse=True)
+    if changed:
+        json.dump(order, open(ORDER_FILE, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    out = [{k: v for k, v in p.items() if k != "_ts"} for p in posts]  # _ts 는 공개 index.json 에서 제거
     open(os.path.join(LOGDIR, "index.json"), "w", encoding="utf-8").write(
-        json.dumps(posts, ensure_ascii=False, indent=2) + "\n")
-    return posts
+        json.dumps(out, ensure_ascii=False, indent=2) + "\n")
+    return out
 
 def render_markdown(md):
     """마크다운 → (본문 html, standfirst, 읽기시간분, 설명용 평문). figure/캡션 가공 포함."""
