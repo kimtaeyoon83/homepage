@@ -4,9 +4,22 @@ codedeck.duckdns.org {
         format console
     }
 
-    encode gzip
-    root * /srv
-    file_server
+    # 글쓰기 화면 (비밀번호 보호) → writer 컨테이너
+    @write path /write /write/*
+    handle @write {
+        basic_auth {
+            freddie <BCRYPT_HASH_REDACTED>
+        }
+        uri strip_prefix /write
+        reverse_proxy http://writer:8080
+    }
+
+    # 그 외 전부 정적 사이트
+    handle {
+        encode gzip
+        root * /srv
+        file_server
+    }
 
     # --- 이전 백엔드 라우팅 (백엔드 docker start 시 아래 주석 해제하여 복원) ---
     # @rainborn_api path /toy/rainborn/api*

@@ -8,9 +8,26 @@ services:
       - "443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./site:/srv
+      - /home/kimtayoon/homepage/public:/srv
       - caddy_data:/data
       - caddy_config:/config
+    networks:
+      - webnet
+
+  writer:
+    build: /home/kimtayoon/homepage/writer
+    container_name: writer
+    restart: unless-stopped
+    user: "1000:1000"
+    environment:
+      - PORT=8080
+      - HOME=/tmp
+      - TZ=Asia/Seoul
+      - SITE_URL=https://codedeck.duckdns.org
+      - GIT_SSH_COMMAND=ssh -i /keys/id -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/tmp/known_hosts
+    volumes:
+      - /home/kimtayoon/homepage:/repo
+      - /home/kimtayoon/.ssh/id_ed25519_personal:/keys/id:ro
     networks:
       - webnet
 

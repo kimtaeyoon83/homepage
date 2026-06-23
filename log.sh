@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-# Freddie's space — 글(로그) 관리 도구
+# Freddie's space — 터미널에서 글 관리 (웹 작성기 /write 의 대체 수단)
 #   ./log.sh new "제목"     오늘 날짜로 새 글(.md) 생성 후 목록 갱신
-#   ./log.sh build          log/index.json 재생성 (제목·날짜·요약 자동 추출)
+#   ./log.sh build          public/log/index.json 재생성
+# 사이트는 public/ 을 Caddy 가 직접 서빙하므로 저장 즉시 라이브. 백업은 ./deploy.sh
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DIR="$ROOT/log"
-mkdir -p "$DIR"
+DIR="$ROOT/public/log"
+mkdir -p "$DIR/media"
 
 build(){
   python3 - "$DIR" <<'PY'
@@ -38,8 +39,7 @@ case "${1:-}" in
     [ -e "$file" ] && { echo "이미 있음: $file"; exit 1; }
     printf '# %s\n\n여기에 글을 쓰세요.\n' "$title" > "$file"
     build
-    echo "✓ 생성됨: $file"
-    echo "  이제 파일을 열어 내용을 채운 뒤  ./deploy.sh  로 배포하세요."
+    echo "✓ 생성됨: $file  (저장 즉시 라이브 · 백업은 ./deploy.sh)"
     ;;
   build) build ;;
   *) echo '사용법:  ./log.sh new "제목"   |   ./log.sh build' ;;
