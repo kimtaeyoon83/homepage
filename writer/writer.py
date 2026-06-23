@@ -266,7 +266,7 @@ def post_page(meta, num, body_html, standfirst, reading, older, newer, desc, ogi
   <div class="foot">
     <div class="div"><span class="l"></span><span class="s">✦</span><span class="l"></span></div>
     <div class="nav">{nav}</div>
-    <div class="tolist"><a href="/log.html">전체 목록으로</a> · <a href="/">Freddie&rsquo;s space</a></div>
+    <div class="tolist"><a href="/log.html">전체 목록으로</a> · <a href="/">Freddie&rsquo;s space</a> · <a href="mailto:kimtayoon@gmail.com">연락</a></div>
   </div>
 </div>
 <script>
