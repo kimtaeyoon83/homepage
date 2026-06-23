@@ -6,188 +6,157 @@
 <title>Freddie's space</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap" rel="stylesheet" />
 <style>
-  :root{
-    --ink:#070a12; --starlight:#f3efe3; --brass:#c7a24a; --haze:#9aabc8;
-    --frame-soft:rgba(199,162,74,.16); --inset:34px;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;overflow:hidden;background:var(--ink);color:var(--starlight);
-    font-family:'IBM Plex Mono',ui-monospace,monospace;-webkit-font-smoothing:antialiased}
-
-  .base{position:fixed;inset:0;z-index:0;
-    background:
-      radial-gradient(900px 620px at 72% 22%, rgba(40,58,120,.30), transparent 64%),
-      radial-gradient(820px 560px at 20% 82%, rgba(96,58,130,.22), transparent 66%),
-      radial-gradient(circle at 50% 44%, #0b1020 0%, #070a12 70%, #03040a 100%);}
-
-  /* crossfading slides with slow ken-burns on the active one */
-  .slide{position:fixed;inset:0;z-index:1;background-size:cover;background-position:center;
-    opacity:0;transition:opacity 1.9s ease}
-  .slide.active{opacity:1;animation:kenburns 33s ease-out both}
-  @keyframes kenburns{from{transform:scale(1.04)}to{transform:scale(1.15) translate3d(-1.8%,-1.4%,0)}}
-
-  .wash{position:fixed;inset:0;z-index:2;pointer-events:none;
-    background:
-      radial-gradient(140% 105% at 50% 40%, transparent 26%, rgba(7,10,18,.46) 72%, rgba(5,7,14,.86) 100%),
-      linear-gradient(180deg, rgba(7,10,18,.6) 0%, transparent 24%, transparent 58%, rgba(7,10,18,.78) 100%);}
-
-  .plate{position:fixed;inset:var(--inset);z-index:3;pointer-events:none;border:1px solid var(--frame-soft)}
-  .tick{position:absolute;width:13px;height:13px}
-  .tick::before,.tick::after{content:"";position:absolute;background:var(--brass);opacity:.85}
-  .tick::before{left:0;top:6px;width:13px;height:1px}
-  .tick::after{left:6px;top:0;width:1px;height:13px}
-  .tl{left:-7px;top:-7px}.tr{right:-7px;top:-7px}.bl{left:-7px;bottom:-7px}.br{right:-7px;bottom:-7px}
-
-  .stage{position:fixed;inset:var(--inset);z-index:4;display:flex;flex-direction:column;
-    justify-content:center;align-items:center;text-align:center;padding:5vw}
-  .eyebrow{font-size:11px;font-weight:500;letter-spacing:.42em;text-transform:uppercase;
-    color:var(--brass);margin-bottom:30px;min-height:14px;
-    opacity:0;animation:fade .9s ease .2s forwards;transition:opacity .6s ease}
-  .eyebrow span{color:var(--haze)}
-  h1{font-family:'Cormorant',serif;font-weight:500;color:var(--starlight);
-    font-size:clamp(58px,13.5vw,196px);line-height:.92;letter-spacing:.01em;
-    text-shadow:0 0 70px rgba(180,200,255,.22);
-    opacity:0;animation:rise 1.6s cubic-bezier(.2,.7,.2,1) .35s forwards}
-  h1 .apos{font-style:italic;font-weight:400;color:var(--brass)}
-  h1 .lower{font-style:italic;font-weight:400}
-  .tagline{font-family:'Cormorant',serif;font-style:italic;font-weight:400;
-    font-size:clamp(16px,2.5vw,26px);color:var(--haze);margin-top:22px;letter-spacing:.01em;
-    min-height:1.4em;opacity:0;animation:fade 1.1s ease .9s forwards;transition:opacity .6s ease}
-
-  .readout{position:fixed;z-index:4;font-size:11px;letter-spacing:.16em;color:var(--haze);
-    opacity:0;animation:fade 1.1s ease 1.2s forwards}
-  .readout.swap{opacity:.0}
-  .readout .k{color:var(--brass);opacity:.85}
-  .readout .v{color:var(--starlight)}
-  .r-bl{left:calc(var(--inset) + 22px);bottom:calc(var(--inset) + 20px);text-align:left;transition:opacity .6s ease}
-  .r-br{right:calc(var(--inset) + 22px);bottom:calc(var(--inset) + 20px);text-align:right}
-  .readout div{margin-top:7px}
-  .blink{animation:blink 1.1s steps(1) infinite}
-
-  .credit{position:fixed;z-index:4;top:calc(var(--inset) + 20px);right:calc(var(--inset) + 22px);
-    font-size:10px;letter-spacing:.18em;color:var(--haze);text-align:right;
-    opacity:0;animation:fade 1.1s ease 1.4s forwards;transition:opacity .6s ease}
-  .credit .k{color:var(--brass);opacity:.85}
-
-  .navlog{position:fixed;z-index:5;top:calc(var(--inset) + 20px);left:calc(var(--inset) + 22px);
-    font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);text-decoration:none;
-    border-bottom:1px solid transparent;padding-bottom:2px;
-    opacity:0;animation:fade 1.1s ease 1.4s forwards;transition:color .3s ease,border-color .3s ease}
-  .navlog:hover{color:var(--starlight);border-color:var(--brass)}
-  .navlog:focus-visible{outline:1px solid var(--brass);outline-offset:4px}
-  .navlog .ar{color:var(--haze)}
-
-  /* plate index — one tick per image (which of N) */
-  .index{position:fixed;z-index:4;left:50%;bottom:calc(var(--inset) + 16px);transform:translateX(-50%);
-    display:flex;gap:9px;opacity:0;animation:fade 1.1s ease 1.5s forwards}
-  .index i{width:16px;height:1px;background:var(--haze);opacity:.32;transition:opacity .5s ease,background .5s ease}
-  .index i.on{background:var(--brass);opacity:1}
-
-  @keyframes rise{from{opacity:0;transform:translateY(26px);letter-spacing:.16em}to{opacity:1;transform:none;letter-spacing:.01em}}
-  @keyframes fade{to{opacity:1}}
-  @keyframes blink{50%{opacity:.25}}
-
+  html,body{height:100%}
+  body{margin:0;overflow:hidden;background:#070a12;color:#f3efe3;
+    font-family:'IBM Plex Mono',ui-monospace,monospace;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  @keyframes fsKen{from{transform:scale(1.015)}to{transform:scale(1.075) translate3d(-1.3%,-1%,0)}}
+  @keyframes fsBlink{50%{opacity:.2}}
+  .navlog{position:fixed;z-index:6;top:54px;left:58px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+    color:#c7a24a;text-decoration:none;border-bottom:1px solid transparent;padding-bottom:3px;
+    transition:color .3s ease,border-color .3s ease}
+  .navlog:hover{color:#f3efe3;border-color:#c7a24a}
+  .navlog:focus-visible{outline:1px solid #c7a24a;outline-offset:4px}
+  .navlog span{color:#9aabc8}
   @media (max-width:600px){
-    :root{--inset:18px}
-    .eyebrow{letter-spacing:.3em;font-size:10px}
-    .credit{display:none}
-    .index{bottom:calc(var(--inset) + 10px)}
-    .r-bl,.r-br{font-size:10px;left:0;right:0;text-align:center;bottom:calc(var(--inset) + 30px)}
-    .r-bl{bottom:calc(var(--inset) + 62px)}
+    .frame{inset:18px !important}
+    .navlog{top:30px;left:30px;letter-spacing:.2em}
+    #fs-credit{top:32px !important;right:28px !important}
+    #fs-rbl{left:28px !important;bottom:34px !important}
+    #fs-clock{right:28px !important;bottom:34px !important}
+    #fs-index{bottom:14px !important}
+    main{padding:7vw !important}
   }
-  @media (prefers-reduced-motion:reduce){
-    .slide.active{animation:none;transform:none}
-    *{animation-duration:.01ms!important}
-    .eyebrow,h1,.tagline,.readout,.credit,.index{opacity:1}
-  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-  <div class="base"></div>
-  <div id="slides"></div>
-  <div class="wash"></div>
+  <div style="position:fixed;inset:0;z-index:0;background:radial-gradient(900px 620px at 72% 22%, rgba(40,58,120,.30), transparent 64%), radial-gradient(820px 560px at 20% 82%, rgba(96,58,130,.20), transparent 66%), radial-gradient(circle at 50% 44%, #0b1020 0%, #070a12 70%, #03040a 100%)"></div>
 
-  <div class="plate"><i class="tick tl"></i><i class="tick tr"></i><i class="tick bl"></i><i class="tick br"></i></div>
+  <div id="fs-slides" style="position:fixed;inset:0;z-index:1"></div>
 
-  <main class="stage">
-    <div class="eyebrow" id="eyebrow">Webb Field Report</div>
-    <h1>Freddie<span class="apos">&rsquo;s</span> <span class="lower">space</span></h1>
-    <p class="tagline" id="tagline">Wandering the deep field, one frame at a time.</p>
+  <div style="position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(142% 108% at 50% 38%, transparent 22%, rgba(7,10,18,.50) 70%, rgba(4,6,12,.90) 100%), linear-gradient(180deg, rgba(6,9,16,.66) 0%, transparent 22%, transparent 54%, rgba(6,9,16,.82) 100%)"></div>
+
+  <div class="frame" style="position:fixed;inset:34px;z-index:3;pointer-events:none;border:1px solid rgba(199,162,74,.15)">
+    <i style="position:absolute;left:-6px;top:-6px;width:12px;height:12px;opacity:.85;background:linear-gradient(#c7a24a,#c7a24a) center/12px 1px no-repeat, linear-gradient(#c7a24a,#c7a24a) center/1px 12px no-repeat"></i>
+    <i style="position:absolute;right:-6px;top:-6px;width:12px;height:12px;opacity:.85;background:linear-gradient(#c7a24a,#c7a24a) center/12px 1px no-repeat, linear-gradient(#c7a24a,#c7a24a) center/1px 12px no-repeat"></i>
+    <i style="position:absolute;left:-6px;bottom:-6px;width:12px;height:12px;opacity:.85;background:linear-gradient(#c7a24a,#c7a24a) center/12px 1px no-repeat, linear-gradient(#c7a24a,#c7a24a) center/1px 12px no-repeat"></i>
+    <i style="position:absolute;right:-6px;bottom:-6px;width:12px;height:12px;opacity:.85;background:linear-gradient(#c7a24a,#c7a24a) center/12px 1px no-repeat, linear-gradient(#c7a24a,#c7a24a) center/1px 12px no-repeat"></i>
+  </div>
+
+  <main style="position:fixed;inset:34px;z-index:4;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:5vw;pointer-events:none">
+    <div id="fs-eyebrow" style="font-size:11px;font-weight:500;letter-spacing:.4em;text-transform:uppercase;color:#c7a24a;margin-bottom:28px;opacity:1;transition:opacity .7s ease">Webb Field Report</div>
+    <h1 style="font-family:'Cormorant',serif;font-weight:500;color:#f3efe3;font-size:clamp(38px,11vw,162px);line-height:1;letter-spacing:.012em;margin:0;white-space:nowrap;text-shadow:0 0 70px rgba(180,200,255,.20)">Freddie<span style="font-style:italic;font-weight:400;color:#c7a24a">&rsquo;s</span> <span style="font-style:italic;font-weight:400;color:#e8e2d2">space</span></h1>
+    <p id="fs-tagline" style="font-family:'Cormorant',serif;font-style:italic;font-weight:400;font-size:clamp(16px,2.4vw,25px);color:#9aabc8;margin:22px 0 0;letter-spacing:.01em;min-height:1.4em;opacity:1;transition:opacity .7s ease">Wandering the deep field, one frame at a time.</p>
   </main>
 
-  <div class="credit" id="credit"><span class="k">JWST</span> · NASA · ESA · CSA · STScI</div>
-  <a class="navlog" href="/log.html">기록 <span class="ar">↗</span></a>
+  <a class="navlog" href="/log.html">기록 <span>&#8599;</span></a>
 
-  <div class="readout r-bl" id="rbl">
-    <div><span class="k">TARGET</span> &nbsp;<span class="v" id="t-name">—</span> <span id="t-region"></span></div>
-    <div><span class="k">R.A.</span> <span id="t-ra">—</span> &nbsp;&nbsp;<span class="k">DEC</span> <span id="t-dec">—</span></div>
-  </div>
-  <div class="readout r-br">
-    <div><span class="k">UTC</span> &nbsp;<span class="v" id="utc">--:--:--</span><span class="blink">_</span></div>
-    <div><span class="k">KST</span> &nbsp;<span id="kst">--:--:--</span></div>
+  <div id="fs-credit" style="position:fixed;z-index:5;top:56px;right:58px;font-size:9.5px;letter-spacing:.2em;color:#9aabc8;text-align:right;opacity:1;transition:opacity .7s ease"><span id="fs-inst" style="color:#c7a24a;opacity:.85">NIRCam</span> &middot; NASA &middot; ESA &middot; CSA</div>
+
+  <div id="fs-rbl" style="position:fixed;z-index:5;left:58px;bottom:56px;font-size:10.5px;letter-spacing:.15em;color:#9aabc8;text-align:left;line-height:1.95;opacity:1;transition:opacity .7s ease">
+    <div><span style="color:#c7a24a;opacity:.85">TARGET</span>&nbsp;&nbsp;<span id="fs-name" style="color:#f3efe3">&mdash;</span> <span id="fs-region" style="opacity:.72"></span></div>
+    <div><span id="fs-k1" style="color:#c7a24a;opacity:.85">R.A.</span>&nbsp;<span id="fs-v1">&mdash;</span>&nbsp;&nbsp;&nbsp;<span id="fs-k2" style="color:#c7a24a;opacity:.85">DEC</span>&nbsp;<span id="fs-v2">&mdash;</span></div>
   </div>
 
-  <div class="index" id="index"></div>
+  <div id="fs-clock" style="position:fixed;z-index:5;right:58px;bottom:56px;font-size:10.5px;letter-spacing:.15em;color:#9aabc8;text-align:right;line-height:1.95">
+    <div><span style="color:#c7a24a;opacity:.85">UTC</span>&nbsp;&nbsp;<span id="fs-utc" style="color:#f3efe3">--:--:--</span><span style="animation:fsBlink 1.1s steps(1) infinite">_</span></div>
+    <div><span style="color:#c7a24a;opacity:.85">KST</span>&nbsp;&nbsp;<span id="fs-kst">--:--:--</span></div>
+  </div>
 
-  <script>
-    const PLATES=[
-      {img:'/jwst-carina.jpg',     eyebrow:'NGC 3324',  name:'NGC 3324', region:'· Carina Nebula',
-       ra:'10ʰ36ᵐ58ˢ', dec:'−58°37′55″', inst:'NIRCam', tag:'Cosmic cliffs, where new stars are born.'},
-      {img:'/jwst-pillars.jpg',    eyebrow:'M16 · Eagle', name:'M16', region:'· Pillars of Creation',
-       ra:'18ʰ18ᵐ48ˢ', dec:'−13°49′00″', inst:'NIRCam', tag:'The Pillars of Creation, raised from gas and dust.'},
-      {img:'/jwst-southernring.jpg',eyebrow:'NGC 3132', name:'NGC 3132', region:'· Southern Ring',
-       ra:'10ʰ07ᵐ02ˢ', dec:'−40°26′00″', inst:'NIRCam', tag:'A dying star, exhaling its final shells of light.'},
-      {img:'/jwst-stephan.jpg',     eyebrow:'HCG 92', name:'HCG 92', region:"· Stephan's Quintet",
-       ra:'22ʰ35ᵐ58ˢ', dec:'+33°58′00″', inst:'NIRCam · MIRI', tag:'Five galaxies, locked in a slow cosmic dance.'},
-      {img:'/jwst-deepfield.jpg',   eyebrow:'SMACS 0723', name:'SMACS 0723', region:'· First Deep Field',
-       ra:'07ʰ23ᵐ19ˢ', dec:'−73°27′00″', inst:'NIRCam', tag:'Thousands of galaxies in a single grain of sky.'},
-      {img:'/jwst-tarantula.jpg',   eyebrow:'NGC 2070', name:'NGC 2070', region:'· Tarantula Nebula',
-       ra:'05ʰ38ᵐ42ˢ', dec:'−69°06′00″', inst:'NIRCam', tag:'The Tarantula, a nursery of giant young stars.'},
-    ];
-    const INTERVAL=30000;
-    const slidesEl=document.getElementById('slides'), indexEl=document.getElementById('index');
-    const els={eyebrow:document.getElementById('eyebrow'),tagline:document.getElementById('tagline'),
-      credit:document.getElementById('credit'),rbl:document.getElementById('rbl'),
-      name:document.getElementById('t-name'),region:document.getElementById('t-region'),
-      ra:document.getElementById('t-ra'),dec:document.getElementById('t-dec')};
+  <div id="fs-index" style="position:fixed;z-index:5;left:50%;bottom:50px;transform:translateX(-50%);display:flex;gap:9px"></div>
 
-    // build slide layers + index ticks
-    const slides=PLATES.map((p,i)=>{
-      const d=document.createElement('div'); d.className='slide'; slidesEl.appendChild(d);
-      const t=document.createElement('i'); indexEl.appendChild(t);
-      return d;
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const drift = !reduce;
+  const INTERVAL = 32000; // 32초/장
+
+  const PLATES = [
+    {img:'jwst-carina.jpg',      cat:'NGC 3324',  region:'Carina Nebula',       eyebrow:'Cosmic Cliffs',
+     k1:'R.A.', v1:'10ʰ 36ᵐ 58ˢ', k2:'DEC', v2:'−58° 37′ 55″', inst:'NIRCam',
+     tag:'Cosmic cliffs, where new stars are born.'},
+    {img:'jwst-pillars.jpg',     cat:'M16',       region:'Pillars of Creation', eyebrow:'Eagle Nebula',
+     k1:'R.A.', v1:'18ʰ 18ᵐ 48ˢ', k2:'DEC', v2:'−13° 49′ 00″', inst:'NIRCam',
+     tag:'The Pillars of Creation, raised from gas and dust.'},
+    {img:'jwst-southernring.jpg',cat:'NGC 3132',  region:'Southern Ring',       eyebrow:'Planetary Nebula',
+     k1:'R.A.', v1:'10ʰ 07ᵐ 02ˢ', k2:'DEC', v2:'−40° 26′ 00″', inst:'NIRCam',
+     tag:'A dying star, exhaling its final shells of light.'},
+    {img:'jwst-stephan.jpg',     cat:'HCG 92',    region:"Stephan's Quintet",   eyebrow:'Compact Galaxy Group',
+     k1:'R.A.', v1:'22ʰ 35ᵐ 58ˢ', k2:'DEC', v2:'+33° 58′ 00″', inst:'NIRCam · MIRI',
+     tag:'Five galaxies, locked in a slow cosmic dance.'},
+    {img:'jwst-tarantula.jpg',   cat:'NGC 2070',  region:'Tarantula Nebula',    eyebrow:'Star-forming Region',
+     k1:'R.A.', v1:'05ʰ 38ᵐ 42ˢ', k2:'DEC', v2:'−69° 06′ 00″', inst:'NIRCam',
+     tag:'The Tarantula, a nursery of giant young stars.'},
+    {img:'jwst-deepfield.jpg',   cat:'JWST',      region:'Primary Mirror',      eyebrow:'The Instrument',
+     k1:'APERTURE', v1:'6.5 m', k2:'SEGMENTS', v2:'18 · Be / Au', inst:'Beryllium · Gold',
+     tag:'Eighteen hexagons of gold, tuned to catch first light.'},
+  ];
+
+  const slidesEl = $('fs-slides'), indexEl = $('fs-index');
+  const slides = PLATES.map((p,i)=>{
+    const d = document.createElement('div');
+    d.style.cssText = 'position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 2.2s ease;will-change:opacity,transform';
+    slidesEl.appendChild(d);
+    const t = document.createElement('i');
+    t.style.cssText = 'display:block;width:18px;height:1px;background:#9aabc8;opacity:.3;transition:opacity .6s ease,background .6s ease';
+    indexEl.appendChild(t);
+    return d;
+  });
+
+  const els = {
+    eyebrow:$('fs-eyebrow'), tagline:$('fs-tagline'), inst:$('fs-inst'),
+    name:$('fs-name'), region:$('fs-region'),
+    k1:$('fs-k1'), v1:$('fs-v1'), k2:$('fs-k2'), v2:$('fs-v2'),
+    credit:$('fs-credit'), rbl:$('fs-rbl')
+  };
+  const paint = i => {
+    const p = PLATES[i];
+    els.eyebrow.innerHTML = 'Webb Field Report &nbsp;·&nbsp; ' + p.eyebrow;
+    els.tagline.textContent = p.tag;
+    els.inst.textContent = p.inst;
+    els.name.textContent = p.cat;
+    els.region.textContent = '· ' + p.region;
+    els.k1.textContent = p.k1; els.v1.textContent = p.v1;
+    els.k2.textContent = p.k2; els.v2.textContent = p.v2;
+    [...indexEl.children].forEach((t,k)=>{
+      t.style.opacity = k===i ? '1' : '.3';
+      t.style.background = k===i ? '#c7a24a' : '#9aabc8';
     });
-    function paint(i){ const p=PLATES[i];
-      els.eyebrow.innerHTML='Webb Field Report &nbsp;<span>·</span>&nbsp; '+p.eyebrow;
-      els.tagline.textContent=p.tag;
-      els.credit.innerHTML='<span class="k">'+p.inst+'</span> · James Webb Space Telescope';
-      els.name.textContent=p.name; els.region.textContent=p.region; els.ra.textContent=p.ra; els.dec.textContent=p.dec;
-      [...indexEl.children].forEach((t,k)=>t.classList.toggle('on',k===i));
-    }
-    function setTextSwap(i){ // 텍스트 페이드 후 교체
-      [els.eyebrow,els.tagline,els.credit,els.rbl].forEach(e=>e.style.opacity=0);
-      setTimeout(()=>{ paint(i); [els.eyebrow,els.tagline,els.credit,els.rbl].forEach(e=>e.style.opacity=''); },600);
-    }
+  };
+  const activate = (n, prev) => {
+    const s = slides[n];
+    s.style.opacity = '1';
+    if (drift){ s.style.animation = 'none'; void s.offsetWidth; s.style.animation = 'fsKen 42s ease-out both'; }
+    if (prev != null && prev !== n) slides[prev].style.opacity = '0';
+  };
 
-    let cur=0;
-    // 첫 장 즉시 로드/표시, 나머지는 곧이어 프리로드
-    slides[0].style.backgroundImage=`url(${PLATES[0].img})`;
-    slides[0].classList.add('active'); paint(0);
-    setTimeout(()=>{ PLATES.forEach((p,i)=>{ if(i) slides[i].style.backgroundImage=`url(${p.img})`; }); }, 1500);
+  slides[0].style.backgroundImage = `url("${PLATES[0].img}")`;
+  paint(0); activate(0, null);
+  setTimeout(()=>{ PLATES.forEach((p,i)=>{ if(i) slides[i].style.backgroundImage = `url("${p.img}")`; }); }, 1300);
 
-    function next(){ const n=(cur+1)%PLATES.length;
-      slides[n].classList.remove('active'); void slides[n].offsetWidth; // restart ken-burns
-      slides[n].classList.add('active'); slides[cur].classList.remove('active');
-      setTextSwap(n); cur=n; }
-    setInterval(next, INTERVAL);
+  let cur = 0;
+  if (INTERVAL > 0){
+    const swapGroup = [els.eyebrow, els.tagline, els.credit, els.rbl];
+    setInterval(()=>{
+      const n = (cur + 1) % PLATES.length;
+      if (!reduce) swapGroup.forEach(e=>{ if(e) e.style.opacity='0'; });
+      setTimeout(()=>{ paint(n); if(!reduce) swapGroup.forEach(e=>{ if(e) e.style.opacity='1'; }); }, reduce?0:560);
+      activate(n, cur);
+      cur = n;
+    }, INTERVAL);
+  }
 
-    const utc=document.getElementById('utc'),kst=document.getElementById('kst');
-    (function tick(){const d=new Date();
-      utc.textContent=d.toISOString().slice(11,19);
-      kst.textContent=d.toLocaleTimeString('ko-KR',{hour12:false,timeZone:'Asia/Seoul'});
-      setTimeout(tick,1000);})();
-  </script>
+  const utc=$('fs-utc'), kst=$('fs-kst');
+  const tick = ()=>{
+    const d = new Date();
+    if(utc) utc.textContent = d.toISOString().slice(11,19);
+    if(kst) kst.textContent = d.toLocaleTimeString('ko-KR',{hour12:false,timeZone:'Asia/Seoul'});
+  };
+  tick(); setInterval(tick, 1000);
+})();
+</script>
 </body>
 </html>
