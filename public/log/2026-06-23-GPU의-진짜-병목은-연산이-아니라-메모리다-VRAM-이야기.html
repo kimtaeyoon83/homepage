@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GPU의 진짜 병목은 연산이 아니라 메모리다 — VRAM 이야기 · Freddie's space</title>
+<meta name="description" content="RTX 5090을 손에 쥐고 LLM을 돌리려다 깨달은 것: 사양표가 자랑하는 TFLOPS는 거의 쓰지도 못한다. 발목을 잡는 건 언제나 메모리였다."/>
+<meta name="author" content="Freddie"/>
+<link rel="canonical" href="https://codedeck.duckdns.org/log/2026-06-23-GPU%EC%9D%98-%EC%A7%84%EC%A7%9C-%EB%B3%91%EB%AA%A9%EC%9D%80-%EC%97%B0%EC%82%B0%EC%9D%B4-%EC%95%84%EB%8B%88%EB%9D%BC-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%8B%A4-VRAM-%EC%9D%B4%EC%95%BC%EA%B8%B0.html"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="Freddie's space"/>
+<meta property="og:title" content="GPU의 진짜 병목은 연산이 아니라 메모리다 — VRAM 이야기"/>
+<meta property="og:description" content="RTX 5090을 손에 쥐고 LLM을 돌리려다 깨달은 것: 사양표가 자랑하는 TFLOPS는 거의 쓰지도 못한다. 발목을 잡는 건 언제나 메모리였다."/>
+<meta property="og:url" content="https://codedeck.duckdns.org/log/2026-06-23-GPU%EC%9D%98-%EC%A7%84%EC%A7%9C-%EB%B3%91%EB%AA%A9%EC%9D%80-%EC%97%B0%EC%82%B0%EC%9D%B4-%EC%95%84%EB%8B%88%EB%9D%BC-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%8B%A4-VRAM-%EC%9D%B4%EC%95%BC%EA%B8%B0.html"/>
+<meta property="og:image" content="https://commons.wikimedia.org/wiki/Special:FilePath/RTX%205090%20-%20du%C5%BCa%20wydajno%C5%9B%C4%87%20du%C5%BCym%20kosztem%20(2160p%2030fps%20VP9%20LQ-96kbit%20AAC"/>
+<meta property="article:published_time" content="2026-06-23"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="GPU의 진짜 병목은 연산이 아니라 메모리다 — VRAM 이야기"/>
+<meta name="twitter:description" content="RTX 5090을 손에 쥐고 LLM을 돌리려다 깨달은 것: 사양표가 자랑하는 TFLOPS는 거의 쓰지도 못한다. 발목을 잡는 건 언제나 메모리였다."/>
+<meta name="twitter:image" content="https://commons.wikimedia.org/wiki/Special:FilePath/RTX%205090%20-%20du%C5%BCa%20wydajno%C5%9B%C4%87%20du%C5%BCym%20kosztem%20(2160p%2030fps%20VP9%20LQ-96kbit%20AAC"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="alternate" type="application/rss+xml" title="Freddie's space — Field Log" href="/rss.xml"/>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "GPU의 진짜 병목은 연산이 아니라 메모리다 — VRAM 이야기", "datePublished": "2026-06-23", "dateModified": "2026-06-23", "inLanguage": "ko", "wordCount": 1015, "author": {"@type": "Person", "name": "Freddie"}, "publisher": {"@type": "Person", "name": "Freddie"}, "mainEntityOfPage": "https://codedeck.duckdns.org/log/2026-06-23-GPU%EC%9D%98-%EC%A7%84%EC%A7%9C-%EB%B3%91%EB%AA%A9%EC%9D%80-%EC%97%B0%EC%82%B0%EC%9D%B4-%EC%95%84%EB%8B%88%EB%9D%BC-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%8B%A4-VRAM-%EC%9D%B4%EC%95%BC%EA%B8%B0.html", "url": "https://codedeck.duckdns.org/log/2026-06-23-GPU%EC%9D%98-%EC%A7%84%EC%A7%9C-%EB%B3%91%EB%AA%A9%EC%9D%80-%EC%97%B0%EC%82%B0%EC%9D%B4-%EC%95%84%EB%8B%88%EB%9D%BC-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%8B%A4-VRAM-%EC%9D%B4%EC%95%BC%EA%B8%B0.html", "image": "https://commons.wikimedia.org/wiki/Special:FilePath/RTX%205090%20-%20du%C5%BCa%20wydajno%C5%9B%C4%87%20du%C5%BCym%20kosztem%20(2160p%2030fps%20VP9%20LQ-96kbit%20AAC", "description": "RTX 5090을 손에 쥐고 LLM을 돌리려다 깨달은 것: 사양표가 자랑하는 TFLOPS는 거의 쓰지도 못한다. 발목을 잡는 건 언제나 메모리였다."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Freddie's space", "item": "https://codedeck.duckdns.org/"}, {"@type": "ListItem", "position": 2, "name": "Field Log", "item": "https://codedeck.duckdns.org/log.html"}, {"@type": "ListItem", "position": 3, "name": "GPU의 진짜 병목은 연산이 아니라 메모리다 — VRAM 이야기", "item": "https://codedeck.duckdns.org/log/2026-06-23-GPU%EC%9D%98-%EC%A7%84%EC%A7%9C-%EB%B3%91%EB%AA%A9%EC%9D%80-%EC%97%B0%EC%82%B0%EC%9D%B4-%EC%95%84%EB%8B%88%EB%9D%BC-%EB%A9%94%EB%AA%A8%EB%A6%AC%EB%8B%A4-VRAM-%EC%9D%B4%EC%95%BC%EA%B8%B0.html"}]}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JJQRYQ0NG6"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-JJQRYQ0NG6');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root{--ink:#070a12;--star:#f3efe3;--brass:#c7a24a;--haze:#9aabc8;--line:rgba(199,162,74,.16);--inset:34px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{min-height:100%;background:var(--ink);color:var(--star);font-family:'IBM Plex Mono',ui-monospace,monospace;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .bg1{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(1000px 680px at 80% 8%, rgba(40,58,120,.20), transparent 62%),radial-gradient(880px 600px at 8% 92%, rgba(96,58,130,.14), transparent 64%),radial-gradient(circle at 50% 26%, #0b1020 0%, #070a12 70%, #03040a 100%)}
+  .bg2{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.28;background-image:radial-gradient(1.1px 1.1px at 40px 60px,#fff,transparent),radial-gradient(1px 1px at 220px 120px,#cfe0ff,transparent),radial-gradient(1.2px 1.2px at 380px 220px,#fff,transparent),radial-gradient(1px 1px at 540px 80px,#a9c2ff,transparent);background-repeat:repeat;background-size:600px 320px}
+  .plate{position:fixed;inset:var(--inset);z-index:1;pointer-events:none;border:1px solid rgba(199,162,74,.14)}
+  .tick{position:absolute;width:12px;height:12px;opacity:.8;background:linear-gradient(var(--brass),var(--brass)) center/12px 1px no-repeat,linear-gradient(var(--brass),var(--brass)) center/1px 12px no-repeat}
+  .tl{left:-6px;top:-6px}.tr{right:-6px;top:-6px}.bl{left:-6px;bottom:-6px}.br{right:-6px;bottom:-6px}
+  #progress{position:fixed;top:0;left:0;height:2px;width:100%;background:var(--brass);transform:scaleX(0);transform-origin:left center;z-index:12;transition:transform .12s linear;box-shadow:0 0 8px rgba(199,162,74,.55);pointer-events:none}
+  .wrap{position:relative;z-index:2;max-width:680px;margin:0 auto;padding:clamp(58px,10vh,116px) clamp(26px,6vw,42px) 130px}
+  .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:clamp(40px,8vh,82px)}
+  .back{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--brass);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px;transition:color .3s,border-color .3s}
+  .back:hover{color:var(--star);border-color:var(--brass)}
+  .crumb{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--haze)}
+  .phead{margin-bottom:clamp(28px,5vh,48px)}
+  .phead .meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:20px}
+  .phead .meta .n{color:var(--brass)}.phead .meta .sep{color:rgba(199,162,74,.4)}.phead .meta .x{color:var(--haze)}
+  .phead h1{font-family:'Cormorant','Noto Serif KR',serif;font-weight:500;font-size:clamp(32px,5.2vw,55px);line-height:1.07;letter-spacing:.008em;color:var(--star);text-wrap:balance}
+  .standfirst{font-family:'Cormorant','Noto Serif KR',serif;font-style:italic;font-weight:500;font-size:clamp(18px,2.3vw,23px);color:#b9a368;margin-top:18px;line-height:1.32;letter-spacing:.01em}
+  .fs-prose{font-family:'Newsreader','Noto Serif KR',serif;font-size:17px;line-height:1.78;color:#e4e0d2;font-variant-numeric:oldstyle-nums}
+  .fs-prose > p:first-of-type{font-size:1.05em;line-height:1.72;color:#efeadd}
+  .fs-prose p{margin:0 0 1.3em}
+  .fs-prose h2{font-family:'Cormorant','Noto Serif KR',serif;font-weight:600;font-size:1.68em;line-height:1.14;margin:2.2em 0 .6em;color:#f5f1e6;letter-spacing:.005em}
+  .fs-prose h2:first-child{margin-top:0}
+  .fs-prose h3{font-family:'Cormorant','Noto Serif KR',serif;font-weight:600;font-size:1.3em;line-height:1.24;margin:1.9em 0 .5em;color:#f1ecdf}
+  .fs-prose strong{color:#f5f1e6;font-weight:600}
+  .fs-prose em{font-style:italic;color:#e9e4d6}
+  .fs-prose a{color:#c7a24a;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:rgba(199,162,74,.42);transition:color .25s,text-decoration-color .25s}
+  .fs-prose a:hover{color:#f3efe3;text-decoration-color:#c7a24a}
+  .fs-prose ul,.fs-prose ol{margin:0 0 1.3em;padding-left:1.3em}
+  .fs-prose li{margin:.4em 0;padding-left:.2em}.fs-prose li::marker{color:#c7a24a}
+  .fs-prose blockquote{margin:1.9em 0;padding:.5em 0 .5em 1.5em;border-left:2px solid #c7a24a;font-style:italic;color:#cdd4e3}
+  .fs-prose blockquote p{margin:.5em 0}.fs-prose blockquote strong{color:#e3c373;font-style:normal}
+  .fs-prose code{font-family:'IBM Plex Mono',monospace;font-size:.8em;background:rgba(199,162,74,.1);padding:.13em .42em;border-radius:3px;color:#e3c373}
+  .fs-prose pre{background:rgba(9,14,26,.7);border:1px solid rgba(199,162,74,.16);border-radius:6px;padding:18px 20px;overflow:auto;margin:1.7em 0}
+  .fs-prose pre code{background:none;padding:0;color:#dfe6f2;font-size:.84em;line-height:1.65}
+  .fs-prose hr{border:0;height:1px;background:linear-gradient(90deg,transparent,rgba(199,162,74,.5),transparent);margin:2.8em 0}
+  .fs-prose table{width:100%;border-collapse:collapse;margin:2em 0;font-family:'IBM Plex Mono',monospace;font-size:13.5px;line-height:1.5}
+  .fs-prose thead th{text-align:left;color:#c7a24a;font-weight:500;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;padding:11px 16px 11px 0;border-bottom:1px solid rgba(199,162,74,.42)}
+  .fs-prose tbody td{padding:12px 16px 12px 0;border-bottom:1px solid rgba(199,162,74,.12);color:#d7d2c3;vertical-align:top}
+  .fs-prose tbody td:first-child{color:#efeadd}
+  .fs-prose figure{margin:2.2em 0}
+  .fs-prose figure img{width:100%;height:auto;display:block;border-radius:4px;border:1px solid rgba(199,162,74,.18);background:rgba(10,16,30,.5)}
+  .fs-prose figure.fig-diagram img{background:#f4f1e9;padding:20px;box-sizing:border-box}
+  .fs-prose figcaption{font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.65;color:#9aabc8;margin-top:11px;letter-spacing:.015em;padding-left:14px;border-left:1px solid rgba(199,162,74,.32)}
+  .fs-prose img{max-width:100%;height:auto}
+  .foot{margin-top:clamp(56px,9vh,92px)}
+  .foot .div{display:flex;align-items:center;gap:16px;margin-bottom:30px}
+  .foot .div span.l{flex:1;height:1px;background:rgba(199,162,74,.18)}
+  .foot .div span.s{color:var(--brass);font-size:13px;letter-spacing:.4em}
+  .nav{display:flex;gap:18px;align-items:stretch}
+  .nav a{flex:1;text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:4px;padding:16px 18px;transition:background .3s,border-color .3s}
+  .nav a:hover{background:rgba(199,162,74,.05);border-color:rgba(199,162,74,.4)}
+  .nav a.newer{text-align:right}
+  .nav .lbl{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--haze)}
+  .nav .t{font-family:'Cormorant','Noto Serif KR',serif;font-size:20px;color:var(--star);margin-top:7px;line-height:1.15}
+  .tolist{margin-top:30px;text-align:center;font-size:11px;letter-spacing:.18em}
+  .tolist a{color:var(--brass);text-decoration:none}.tolist a:hover{color:var(--star)}
+  @media (max-width:560px){:root{--inset:16px}.nav{flex-direction:column}.nav a.newer{text-align:left}.fs-prose{font-size:17.5px}.fs-prose table{font-size:12.5px}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="bg1"></div><div class="bg2"></div>
+<div class="plate"><i class="tick tl"></i><i class="tick tr"></i><i class="tick bl"></i><i class="tick br"></i></div>
+<div id="progress"></div>
+<div class="wrap">
+  <div class="top"><a class="back" href="/log.html">&larr; Field Log</a><span class="crumb">Entry</span></div>
+  <article>
+    <div class="phead">
+      <div class="meta"><span class="n">LOG · 005</span><span class="sep">/</span><time class="x" datetime="2026-06-23">2026-06-23</time><span class="sep">/</span><span class="x">7분 읽기</span></div>
+      <h1>GPU의 진짜 병목은 연산이 아니라 메모리다 — VRAM 이야기</h1>
+      
+    </div>
+    <div class="fs-prose"><blockquote>
+<p>RTX 5090을 손에 쥐고 LLM을 돌리려다 깨달은 것: 사양표가 자랑하는 TFLOPS는 거의 쓰지도 못한다. 발목을 잡는 건 언제나 메모리였다.</p>
+</blockquote>
+<figure class="fig-diagram"><img alt="NVIDIA GeForce RTX 5090 (Blackwell)" loading="lazy" referrerpolicy="no-referrer" src="https://commons.wikimedia.org/wiki/Special:FilePath/RTX%205090%20-%20du%C5%BCa%20wydajno%C5%9B%C4%87%20du%C5%BCym%20kosztem%20(2160p%2030fps%20VP9%20LQ-96kbit%20AAC)-00.05.04.568.png"/></figure>
+<blockquote>
+<p><strong>이미지 라이선스 안내 (게시 전 확인용 — 게시 시 이 블록은 삭제하세요)</strong><br/>
+위 GPU 사진은 CC BY 3.0 라이선스라 출처·저작자 표기와 함께 사용 가능합니다. 아래 본문에 표시한 <code>&lt;!-- 이미지 자리 --&gt;</code> 부분은 개념 도표가 들어가면 좋은 위치인데, 적절한 무료 라이선스 이미지를 찾기 어려워 비워뒀습니다. 저작권 문제가 없는 <strong>원본 도표(직접 제작)</strong> 를 넣는 것을 권장합니다.</p>
+</blockquote>
+<h2>들어가며</h2>
+<p>최신 GPU를 보면 다들 <strong>연산 성능(TFLOPS)</strong> 을 앞세운다. RTX 5090은 NVIDIA의 최신 Blackwell 아키텍처(Compute Capability 12.0)로, 연산 성능만 따지면 차고 넘친다. 그런데 막상 대형 언어 모델(LLM)을 올리려고 하면 전혀 다른 벽에 부딪힌다.</p>
+<p>바로 <strong>메모리(VRAM)</strong> 다.</p>
+<p>이 글은 "연산은 넘치는데 왜 모델이 안 돌아가지?"라는 질문에서 출발해, GPU 추론의 진짜 병목이 무엇인지, 그리고 업계가 이 문제를 어떻게 풀어왔는지를 정리한 것이다.</p>
+<hr/>
+<h2>1. 왜 연산이 아니라 메모리인가</h2>
+<p>가장 비직관적인 부분부터 짚자.</p>
+<p><strong>토큰 생성은 '연산' 작업이 아니라 '메모리 읽기' 작업이다.</strong></p>
+<p>LLM이 토큰 하나를 만들 때 GPU가 하는 일의 대부분은 수십 GB짜리 가중치를 VRAM에서 읽어오는 것이다. 곱셈·덧셈 같은 실제 연산은 읽어온 데이터로 잠깐 할 뿐이다.</p>
+<p>그래서 5090처럼 연산 유닛이 아무리 많아도, 가중치를 다 읽어올 때까지 그 유닛들은 <strong>데이터를 기다리며 놀고</strong> 있다. 이런 상태를 <em>memory-bound</em>(메모리 병목)라고 부른다.</p>
+<!-- 이미지 자리: "memory-bound vs compute-bound" 개념도 — 연산 유닛이 데이터를 기다리는 모습 -->
+<p>이 한 가지 사실에서 여러 역설이 나온다.</p>
+<ul>
+<li>VRAM이 모자라 일부를 시스템 RAM으로 내리면, 약 28배 느린 PCIe를 타느라 연산 성능이 무의미해진다.</li>
+<li>그래서 "더 빠른 GPU"보다 "VRAM이 더 큰 GPU"가 실질적으로 나은 경우가 많다.</li>
+<li>H100이 5090보다 구세대(Hopper, CC 9.0)인데도 LLM에서 선호되는 핵심 이유는, 연산이 아니라 <strong>HBM 메모리의 대역폭과 용량</strong> 때문이다.</li>
+</ul>
+<h3>GPU별 메모리 비교</h3>
+<table>
+<thead>
+<tr>
+<th>GPU</th>
+<th>아키텍처</th>
+<th>VRAM</th>
+<th>메모리 대역폭</th>
+<th>NVLink</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RTX 4090</td>
+<td>Ada (CC 8.9)</td>
+<td>24GB GDDR6X</td>
+<td>약 1.01 TB/s</td>
+<td>없음</td>
+</tr>
+<tr>
+<td><strong>RTX 5090</strong></td>
+<td>Blackwell (CC 12.0)</td>
+<td>32GB GDDR7</td>
+<td><strong>약 1.79 TB/s</strong></td>
+<td><strong>없음</strong></td>
+</tr>
+<tr>
+<td>H100 SXM</td>
+<td>Hopper (CC 9.0)</td>
+<td>80GB HBM3</td>
+<td>약 3.35 TB/s</td>
+<td>있음</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>세대가 위 = 무조건 성능이 위, 가 아니다.</strong><br/>
+RTX 5090(소비자용)과 H100(데이터센터용)은 애초에 다른 제품군이다. 세대는 5090이 최신이지만, H100은 메모리 용량(80GB)·대역폭(약 1.9배)·NVLink를 갖춰 대형 모델과 멀티 GPU 워크로드에서 앞선다. 특히 <strong>5090에는 NVLink가 없어</strong> 여러 장을 묶는 텐서 병렬이 PCIe 대역폭에 묶이는 점이 결정적 한계다.</p>
+</blockquote>
+<hr/>
+<h2>2. 메모리는 가중치만 먹지 않는다 — KV 캐시</h2>
+<p>사람들이 흔히 가중치 크기만 계산하다가 정작 <strong>KV 캐시</strong>에서 터진다.</p>
+<p>VRAM은 크게 두 가지를 담는다.</p>
+<ol>
+<li><strong>가중치(weights)</strong> — 모델 그 자체</li>
+<li><strong>KV 캐시(context)</strong> — 지금까지 처리한 문맥</li>
+</ol>
+<p>KV 캐시는 <strong>컨텍스트 길이 × 배치 크기</strong>에 비례해 늘어난다. 긴 문서를 넣고 동시 요청이 많은 워크로드라면, 가중치는 다 올라갔는데 KV 캐시가 남은 VRAM을 전부 잡아먹는 상황이 자주 생긴다.</p>
+<p>그래서 메모리 예산을 짤 때는 <strong>가중치 + KV 캐시</strong>를 항상 같이 봐야 한다.</p>
+<!-- 이미지 자리: VRAM 점유 구조 — 가중치 + KV 캐시 + 오버헤드 스택 막대그래프 -->
+<hr/>
+<h2>3. 실전 계산: 32B 모델은 5090에 들어갈까</h2>
+<p>32B(320억 파라미터)급 모델을 예로 양자화 수준별 메모리를 따져보자. 5090의 VRAM은 <strong>32GB</strong>다.</p>
+<table>
+<thead>
+<tr>
+<th>정밀도</th>
+<th>가중치 크기</th>
+<th>KV·오버헤드 여유</th>
+<th>5090 32GB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FP16</td>
+<td>약 64GB</td>
+<td>—</td>
+<td>❌ 불가능</td>
+</tr>
+<tr>
+<td>8-bit (INT8/FP8)</td>
+<td>약 32GB</td>
+<td>거의 없음</td>
+<td>⚠️ 사실상 불가</td>
+</tr>
+<tr>
+<td>4-bit (AWQ/GPTQ)</td>
+<td>약 16–18GB</td>
+<td>14–16GB 확보</td>
+<td>✅ 현실적</td>
+</tr>
+</tbody>
+</table>
+<p>핵심은 이렇다.</p>
+<ul>
+<li><strong>8-bit</strong>는 가중치만으로 32GB를 거의 꽉 채워서, KV 캐시·활성화·CUDA 컨텍스트가 들어갈 자리가 없다. 한 장으로는 사실상 불가능하다.</li>
+<li><strong>4-bit</strong>는 가중치가 16–18GB로 줄어 14GB 안팎의 여유가 남는다. 이 여유가 KV 캐시를 받아주므로 long-context와 동시 요청도 소화할 수 있다.</li>
+</ul>
+<blockquote>
+<p>4-bit는 품질이 많이 떨어지지 않을까? 요즘 AWQ 4-bit는 잘 튜닝하면 FP16 대비 손실이 작다(태스크에 따라 1–3% 수준). 정확도가 중요한 작업이라도 4-bit로 먼저 평가하고, 부족할 때 8-bit(= GPU 추가)로 올리는 순서가 비용 대비 합리적이다.</p>
+<p><strong>참고:</strong> Blackwell은 5세대 Tensor Core에서 <strong>FP4/FP8을 하드웨어로 지원</strong>한다. FP8은 FP16 대비 메모리를 절반으로 줄이면서 정확도를 거의 유지해, 양자화 추론에 특히 유리하다.</p>
+</blockquote>
+<hr/>
+<h2>4. 꼭 전부 VRAM에 올려야 하나 — 오프로딩의 함정</h2>
+<p>모델이 VRAM에 안 들어가면, 일부를 시스템 RAM이나 NVMe로 내리는 <strong>오프로딩(offloading)</strong> 이라는 방법이 있다. <code>accelerate</code>의 <code>device_map="auto"</code>, llama.cpp의 <code>-ngl</code>, DeepSpeed ZeRO-Offload/Infinity 등이 그것이다.</p>
+<p>결론부터 말하면, <strong>"되긴 하지만 5090과는 궁합이 나쁜"</strong> 방법이다.</p>
+<p>이유는 대역폭이다.</p>
+<ul>
+<li>VRAM: 약 1.79 TB/s</li>
+<li>PCIe 5.0 x16: 약 64 GB/s (<strong>약 28배 느림</strong>)</li>
+</ul>
+<p>토큰 생성은 매 토큰마다 모델의 모든 레이어를 통과한다. 그중 일부가 RAM에 있으면, 그 레이어들은 <strong>매 토큰마다 PCIe를 왕복</strong>한다. 토큰 생성이 본질적으로 메모리 대역폭 병목 작업이라, 오프로딩된 비율에 거의 비례해 느려진다.</p>
+<!-- 이미지 자리: VRAM(1.79 TB/s) vs PCIe 5.0(64 GB/s) 대역폭 격차 막대그래프 -->
+<p>5090은 "연산은 넘치는데 메모리가 부족한" 상황이다. 오프로딩은 그 부족한 메모리를 느린 PCIe로 메우는 것이라, <strong>넘치던 연산 성능이 데이터를 기다리며 놀게</strong> 된다. 가진 강점을 버리고 약점에 의존하는 셈이다.</p>
+<p><strong>오프로딩이 맞는 경우는 따로 있다.</strong></p>
+<ul>
+<li>밤새 돌려 결과만 받으면 되는 <strong>배치성 / 비대화형</strong> 작업</li>
+<li>모델이 도는지만 확인하는 <strong>1회성 실험</strong></li>
+<li>프롬프트가 길고 출력이 짧을 때 (prefill은 연산 집약적이라 페널티가 작다)</li>
+</ul>
+<p>응답 지연이 중요한 실시간 서비스라면 부적합하다.</p>
+<hr/>
+<h2>5. 업계는 이 병목을 어떻게 풀어왔나</h2>
+<p>흥미로운 점은 <strong>하드웨어·소프트웨어·모델 아키텍처 세 층위가 전부 같은 방향</strong>으로 움직였다는 것이다. 목표는 하나, "메모리를 덜 읽고 덜 쓰자."</p>
+<table>
+<thead>
+<tr>
+<th>계층</th>
+<th>핵심 아이디어</th>
+<th>대표 기술</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>가중치</td>
+<td>데이터를 줄인다</td>
+<td>GPTQ, AWQ, FP8/FP4</td>
+</tr>
+<tr>
+<td>KV 캐시</td>
+<td>구조적으로 압축한다</td>
+<td>GQA, MLA, PagedAttention</td>
+</tr>
+<tr>
+<td>연산</td>
+<td>중간 메모리를 안 쓴다</td>
+<td>FlashAttention</td>
+</tr>
+<tr>
+<td>스케줄링</td>
+<td>GPU를 안 놀린다</td>
+<td>Continuous batching, Speculative decoding</td>
+</tr>
+<tr>
+<td>확장</td>
+<td>나눠 담는다</td>
+<td>Tensor/Pipeline parallel, ZeRO</td>
+</tr>
+<tr>
+<td>최후</td>
+<td>느려도 담는다</td>
+<td>Offloading</td>
+</tr>
+</tbody>
+</table>
+<p>각 층위를 조금 더 풀어보면:</p>
+<p><strong>가중치 — 양자화.</strong> 읽을 데이터 자체를 줄이는 가장 직접적인 방법. AWQ는 중요한 가중치를 보존하며 4-bit로 줄여 품질 손실을 최소화한다. Blackwell·Hopper는 FP4/FP8을 하드웨어로 지원한다.</p>
+<p><strong>KV 캐시 — 어텐션 구조 개선.</strong> MQA·GQA는 헤드 간에 K·V를 공유해 캐시를 줄이고(요즘 오픈 모델 대부분이 GQA 채택), DeepSeek의 MLA는 KV를 저차원 latent로 압축해 캐시를 극단적으로 줄인다. vLLM의 PagedAttention은 캐시를 OS 가상메모리처럼 페이지 단위로 관리해 단편화 낭비를 없앴다.</p>
+<p><strong>연산 — FlashAttention.</strong> 어텐션 계산의 거대한 중간 행렬을 VRAM에 쓰지 않고 칩 내부(SRAM)에서 처리해, 메모리 사용과 속도를 동시에 잡았다.</p>
+<p><strong>스케줄링.</strong> Continuous batching은 요청을 토큰 단위로 합류·이탈시켜 GPU를 놀리지 않고, speculative decoding은 작은 모델이 미리 추측하고 큰 모델이 한 번에 검증해 큰 모델의 메모리 읽기 횟수를 줄인다.</p>
+<p><strong>확장 — 병렬화.</strong> 한 장에 안 들어가면 Tensor Parallelism(레이어를 가로로 분할)이나 Pipeline Parallelism(레이어를 세로로 분할)으로 여러 GPU에 나눠 담는다. 단, 텐서 병렬은 GPU 간 통신이 잦아 <strong>NVLink 대역폭</strong>이 중요한데, NVLink가 없는 RTX 5090에서는 이 방식이 비효율적이다.</p>
+<hr/>
+<h2>마치며 — 결국 메모리 싸움이다</h2>
+<p>GPU로 LLM을 돌릴 때 마주하는 거의 모든 결정은 결국 한 가지 프레임으로 정리된다.</p>
+<blockquote>
+<p><strong>모델을 메모리에 맞출 것인가(양자화) vs 메모리를 모델에 맞출 것인가(GPU 추가).</strong></p>
+</blockquote>
+<p>연산 성능은 요즘 GPU라면 대체로 충분하다. 그래서 실질적으로는 메모리 싸움만 남는다. 하드웨어를 고를 때도 TFLOPS보다 "VRAM 몇 GB, 대역폭 얼마, NVLink 있나"를 먼저 보게 되는 이유가 여기에 있다.</p>
+<p>요즘 vLLM으로 모델 하나를 띄우면 <strong>AWQ(가중치) + GQA 기반 모델 + PagedAttention/FP8 KV 캐시 + FlashAttention</strong> 스택이 대부분 자동으로 얹힌다. 이 한 줄 안에, 지금까지 이야기한 메모리 절약 기법들이 거의 다 들어가 있는 셈이다.</p>
+<p>연산이 넘치는 시대에, 진짜 실력은 메모리를 어떻게 다루느냐에서 갈린다.</p></div>
+  </article>
+  <div class="foot">
+    <div class="div"><span class="l"></span><span class="s">✦</span><span class="l"></span></div>
+    <div class="nav"><a class="older" href="/log/2026-06-23-NPU%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0-%EC%B6%94%EB%A1%A0%EC%9D%98-%EC%8B%9C%EB%8C%80-%EC%A0%84%EC%9A%A9-%EA%B0%80%EC%86%8D%EA%B8%B0%EB%8A%94-GPU%EB%A5%BC-%EB%8C%80%EC%B2%B4%ED%95%A0-%EC%88%98-%EC%9E%88%EB%8A%94%EA%B0%80.html"><div class="lbl">&larr; 이전 기록</div><div class="t">NPU에 대한 고찰 — 추론의 시대, 전용 가속기는 GPU를 대체할 수 있는가</div></a></div>
+    <div class="tolist"><a href="/log.html">전체 목록으로</a> · <a href="/">Freddie&rsquo;s space</a> · <a href="mailto:kimtayoon@gmail.com">연락</a></div>
+  </div>
+</div>
+<script>
+(function(){
+  var bar=document.getElementById('progress');
+  function up(){var h=document.documentElement,m=h.scrollHeight-h.clientHeight,p=m>0?Math.min(1,Math.max(0,(scrollY||h.scrollTop)/m)):0;bar.style.transform='scaleX('+p+')';}
+  addEventListener('scroll',up,{passive:true});addEventListener('resize',up);up();
+})();
+</script>
+</body>
+</html>
