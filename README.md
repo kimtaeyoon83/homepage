@@ -29,6 +29,18 @@ git add -A && git commit -m "log: 오늘의 제목" && git push   # 백업
 
 기존 글 제목을 바꾸는 등 수정 후에는 `./log.sh build` 로 목록을 다시 만든다.
 
+## 글에 사진 넣기
+
+1. 사진 파일을 `log/media/` 폴더에 둔다. (scp, 또는 서버에서 `curl -o log/media/이름.jpg URL`)
+2. 글(.md) 안에서 이렇게 참조:
+   ```markdown
+   ![설명](/log/media/이름.jpg)
+   ```
+3. `./deploy.sh` → 사진과 글이 함께 올라간다.
+
+- 권장: 가로 1600px 이하로 줄여서 올리면 로딩이 빠르다.
+- 홈 배경의 JWST 이미지(`jwst-*.jpg`)는 저장소 루트에 있고 `index.html` 의 `PLATES` 배열에서 관리한다 (글 사진과는 별개).
+
 ## 메모
 
 - **이미지/HTML 수정**은 `deploy.sh` 후 새로고침이면 끝 (Caddy 재시작 불필요).
